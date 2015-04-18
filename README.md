@@ -1,6 +1,16 @@
 # knucklebone.js
 Lightweight minimal ajax library
 
+Before you can play
+===================
+*Don't Forget to add knucklebone before __your__ scripts:*
+```html
+...
+	<script type="text/javascript" src="knucklebone.js"></script>
+	<script type="text/javascript" src="yourCode.js"></script>
+</body>
+```
+
 How to play knucklebones
 ========================
 *Basic way to GET data:*
@@ -17,7 +27,7 @@ How to play knucklebones
 	knucklebones(pleaseHold).get(URL, myCallback);
 
 	function pleaseHold(){
-		// do something
+		// do something while you wait
 	};
 
 	function myCallback(res){
