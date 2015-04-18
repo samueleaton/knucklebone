@@ -59,5 +59,13 @@ var avgLookingData = knucklebones();
 avgLookingData.get(URL, callback2);
 ```
 
-
+##### Easy Form Submit:
+You can pass the id for the form element:
+```javascript
+knucklebone().formListener("http://localhost:8888/Github/knucklebone.js/process.php", "formId", finish);
+```
+Or pass the form object itself:
+```javascript
+knucklebone().formListener("http://localhost:8888/Github/knucklebone.js/process.php", myform, finish);
+```
 

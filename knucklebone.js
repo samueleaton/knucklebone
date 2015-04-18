@@ -1,73 +1,61 @@
 var knucklebonePrototype = {
-
-	req : function(){ 
-		return new XMLHttpRequest(); 
-	},
-
-	post: function(){
-
-	},
-
-	get: function(URL, CALLBACK){
-		var ajaxRequest = new XMLHttpRequest();
-		ajaxRequest.addEventListener('readystatechange',function(evt){
-			if(ajaxRequest.readyState === 4){
-				console.log("readystatechange: ");
-				console.log(JSON.parse(ajaxRequest.response));
-				CALLBACK(ajaxRequest);
-			}
+	get: function(_URL, _CALLBACK){
+		var req = new XMLHttpRequest();
+		req.addEventListener('readystatechange',function(){
+			if(req.readyState === 4) _CALLBACK(req);
 		});
-		ajaxRequest.open("POST", URL);
-		ajaxRequest.send();
+		req.addEventListener('error', knucklebonePrototype.error);
+		req.open("GET", _URL);
+		req.send();
 	},
-
-	done: function() {
-		console.log("done");
-	}
+	post: function(_URL, _FORM, _CALLBACK){
+		// var req = new XMLHttpRequest();
 	
+		// req.addEventListener('readystatechange',function(){
+		// 	if(req.readyState === 4) _CALLBACK(req);
+		// });
+		// req.addEventListener('error', knucklebonePrototype.error);
+		// req.open("POST", _URL);
+		// httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		// req.send(_FORM_DATA);
+	},
+	postForm: function(_URL, _FORM, _CALLBACK){
+		var req = new XMLHttpRequest();
+		var processedForm = knucklebonePrototype.processForm(_FORM);
+		req.addEventListener('readystatechange',function(){
+			if(req.readyState === 4) _CALLBACK(req);
+		});
+		req.addEventListener('error', knucklebonePrototype.error);
+		req.open("POST", _URL);
+		req.send(processedForm);
+	},
+	formListener: function(_URL, _FORM, _CALLBACK){
+		var _form = knucklebonePrototype.formToObject(_FORM);
+		_form.addEventListener('submit',function(evt){
+			evt.preventDefault();
+			knucklebonePrototype.postForm(_URL, _form, _CALLBACK);
+		});
+	},
+	formToObject: function(_FORM) {
+		var form;
+		if(typeof _FORM === "string"){ // form by id
+			console.log("form data is a string. Get form by id: "+_FORM);
+			form = document.getElementById(_FORM);
+		} else if (typeof _FORM === "object") { // form by object
+			console.log("form data is an object:"); console.log(_FORM);
+			form = _FORM;
+		}
+		return form;
+	},
+	processForm: function(_FORM){
+		var fD = new FormData(_FORM);
+		return fD;
+	}
 };
 
 function knucklebone(STARTFUNCTION) {
 	if(STARTFUNCTION){
-		if(STARTFUNCTION === "function"){
 			STARTFUNCTION();
-		} else {
-			return (function(){
-				"THE ERROR IS NOT HERE!"; // =========
-				console.group("knucklebone says, %c\"check yourself before you wreck yourself\"", "color: red;"); 
-				console.log("%cinvalid parameter type", "color: red;"); 
-				console.log("you passed %c%s", "color: orange; font-style: italic; font-weight: bold;", typeof STARTFUNCTION);
-				console.groupEnd();
-			})();
-		}
 	}
 	return Object.create(knucklebonePrototype);
 }
-
-// var ajaxRequest = new XMLHttpRequest();
-
-// // ajaxRequest.addEventListener('load',function(evt){
-// // 	console.log("loaded: ");
-// // 	console.log(ajaxRequest.readyState);
-// // 	console.log("");
-// // });
-// // ajaxRequest.addEventListener("error", function(evt){
-// // 	console.log("error: ");
-// // 	console.log(evt);
-// // 	console.log("");
-// // });
-// // ajaxRequest.addEventListener("abort", function(evt){
-// // 	console.log("abort: ");
-// // 	console.log(evt);
-// // 	console.log("");
-// // });
-// ajaxRequest.addEventListener('readystatechange',function(evt){
-// 	if(ajaxRequest.readyState === 4){
-// 		console.log("readystatechange: ");
-// 		console.log(JSON.parse(ajaxRequest.response));
-// 	}
-	
-// });
-
-// ajaxRequest.open("POST", "http://localhost:8888/Github/knucklebone.js/data.json");
-// ajaxRequest.send();
