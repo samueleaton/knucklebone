@@ -13,33 +13,29 @@ Lightweight minimal ajax library
 ## How to play knucklebones
 ##### Basic way to GET data:
 ```javascript
-	knucklebones().get(URL, myCallback);
+knucklebones().get(URL, myCallback);
 
-	function myCallback(res){
-		console.log(res); // res is the response data
-	};  
+function myCallback(res){
+	console.log(res); // res is the response data
+};  
 ```
 
 ##### You can have a function run while waiting for the response:
 ```javascript
-	knucklebones(pleaseHold).get(URL, myCallback);
+knucklebones(pleaseHold).get(URL, myCallback);
 
-	function pleaseHold(){
-		// do something while you wait
-	};
-
-	function myCallback(res){
-		console.log(res); // res is the response data
-	};
+function pleaseHold(){
+	// do something while you wait
+};
 ```
 
 ##### Of course, you could always use anonymous functions:
 ```javascript
-	knucklebones(function(){
-		// do something while you wait
-	}).get(URL, function(res){
-		console.log(res);
-	});
+knucklebones(function(){
+	// do something while you wait
+}).get(URL, function(res){
+	console.log(res);
+});
 ```
 
 ##### More than one AJAX call at a time? Pshh, we're professionals:
@@ -53,6 +49,14 @@ But if you want to store the new objects into new variable for some reason, you 
 ```javascript
 var handsomeData = knucklebones().get(URL, callback1);
 var avgLookingData = knucklebones().get(URL, callback2);
+```
+or: 
+```javascript
+var handsomeData = knucklebones();
+handsomeData.get(URL, callback1);
+
+var avgLookingData = knucklebones();
+avgLookingData.get(URL, callback2);
 ```
 
 
