@@ -30,22 +30,11 @@ var knucklebonePrototype = {
 		req.send(processedForm);
 	},
 	formListener: function(_URL, _FORM, _CALLBACK){
-		var _form = knucklebonePrototype.formToObject(_FORM);
+		_form = _FORM;
 		_form.addEventListener('submit',function(evt){
 			evt.preventDefault();
 			knucklebonePrototype.postForm(_URL, _form, _CALLBACK);
 		});
-	},
-	formToObject: function(_FORM) {
-		var form;
-		if(typeof _FORM === "string"){ // form by id
-			console.log("form data is a string. Get form by id: "+_FORM);
-			form = document.getElementById(_FORM);
-		} else if (typeof _FORM === "object") { // form by object
-			console.log("form data is an object:"); console.log(_FORM);
-			form = _FORM;
-		}
-		return form;
 	},
 	processForm: function(_FORM){
 		var fD = new FormData(_FORM);
@@ -57,5 +46,9 @@ function knucklebone(STARTFUNCTION) {
 	if(STARTFUNCTION){
 			STARTFUNCTION();
 	}
-	return Object.create(knucklebonePrototype);
+	var newKnucklebone = Object.create(knucklebonePrototype);
+	newKnucklebone.preCall = function(_FUNCTION) {
+		_FUNCTION();
+	}
+	return newKnucklebone;
 }

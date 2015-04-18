@@ -1,7 +1,8 @@
 <?php
+
 	if(isset($_POST["fName"])){
-		echo "submitted: ";
+		echo "Form Submited to Database";
 	} else {
-		echo "form is NOT good";
+		echo "Form Error";
 	}
 ?>
