@@ -1,4 +1,9 @@
-# knucklebone.js <img src="logo.png" style="max-height:50px;">
+# knucklebone.js 
+
+
+<img src="logo.png" style="display:block;height:80px;">
+
+
 Lightweight, minimal ajax library
 
 _Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET (as GET was intended), or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
