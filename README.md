@@ -1,8 +1,6 @@
-# <img src="icon.png"> knucklebone.js 
+<img src="logo.png"> 
 
-
-
-
+# knucklebone.js 
 
 Lightweight, minimal ajax library
 
