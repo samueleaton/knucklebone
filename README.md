@@ -1,4 +1,4 @@
-# <img src="logo.png" style="width: 100px;"> knucklebone.js 
+# <img src="icon.png"> knucklebone.js 
 
 
 
