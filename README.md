@@ -1,8 +1,10 @@
 # knucklebone.js
 Lightweight minimal ajax library
-
+---
+##### _Knucklebone tries to fill a very specific niche to be more useful and minimal. If you want to get any kind of data through AJAX through GET (as was intended) or if you want to send form data through POST, then knucklebone will be perfect_
+---
 ## Before you can play
-##### Don't Forget to add knucklebone __before__ your scripts:
+##### Don't Forget to add knucklebone __*before*__ your scripts:
 ```html
 ...
 	<script type="text/javascript" src="knucklebone.js"></script>
@@ -10,19 +12,32 @@ Lightweight minimal ajax library
 </body>
 ```
 
-## How to play knucklebones
+## How to play knucklebone (EXAMPLES)
+
+###Getting Data With Ajax
+
 ##### Basic way to GET data:
 ```javascript
-knucklebones().get(URL, myCallback);
+knucklebone().get(URL, myCallback);
 
 function myCallback(res){
 	console.log(res); // res is the response data
 };  
 ```
 
+__HINT:__ If you are expecting a JSON file back:
+```javascript
+knucklebone().get(URL, myCallback);
+
+function myCallback(res){
+// res.json is the parsed json file
+	console.log(res.json); 
+};  
+```
+
 ##### You can have a function run while waiting for the response:
 ```javascript
-knucklebones(pleaseHold).get(URL, myCallback);
+knucklebone(pleaseHold).get(URL, myCallback);
 
 function pleaseHold(){
 	// do something while you wait
@@ -31,7 +46,7 @@ function pleaseHold(){
 
 ##### Of course, you could always use anonymous functions:
 ```javascript
-knucklebones(function(){
+knucklebone(function(){
 	// do something while you wait
 }).get(URL, function(res){
 	console.log(res);
@@ -42,30 +57,51 @@ knucklebones(function(){
 Every time you call the `knucklebone()` function you will create a new object that extends the knucklebone prototype.
 So you should just be able to this (asynchronously): 
 ```javascript
-knucklebones().get(URL1, callback1); // one set of data
-knucklebones().get(URL2, callback2); // second set of data
-```
-But if you want to store the new objects into new variable for some reason, you could do: 
-```javascript
-var handsomeData = knucklebones().get(URL, callback1);
-var avgLookingData = knucklebones().get(URL, callback2);
-```
-or: 
-```javascript
-var handsomeData = knucklebones();
-handsomeData.get(URL, callback1);
-
-var avgLookingData = knucklebones();
-avgLookingData.get(URL, callback2);
+knucklebone().get(URL1, callback1); // one set of data
+knucklebone().get(URL2, callback2); // second set of data
 ```
 
-##### Easy Form Submit:
-You can pass the id for the form element:
+###Posting Form Data With Ajax
+
+##### Simple Form Submit:
+Pass the whole form to knucklebone, it'll do the rest:
 ```javascript
-knucklebone().formListener(URL, "formId", finish);
+// e.g. var formObject = document.getElemenyById("myform");
+knucklebone().post(URL, formObject, finish);
 ```
-Or pass the form object itself:
+
+#####Run a function when the form submits:
 ```javascript
-knucklebone().formListener(URL, myform, finish);
+// 2nd param "true" means call function only if form submitted
+knucklebone(coolFunc, true).post(URL, formObject, finish);
+
+function coolFunc(){
+	// do something cool when form submitted
+};
+```
+
+#####Prevent ajax call if form is not proper:
+HTML
+```html
+<form id="superForm">
+	<input id="superField" name="superField">
+	<input type="submit">
+</form>
+```
+JavaScript
+```javascript
+// store initialized knucklebone into variable
+var myAJAX = knucklebone(coolFunc, true);
+// add post method
+myAJAX.post("process.php", superForm, finish);
+
+// define function to call when form is submitted
+function coolFunc(){
+	// setting your ajax object's form.error property to true
+	// prevents ajax call 
+	if(superField.value.length < 1) myAJAX.form.errors = true; 
+	// dont forget to set it back to false if no errors
+	else myAJAX.form.errors = false; 
+};
 ```
 

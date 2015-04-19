@@ -1,7 +1,8 @@
 <?php
 	// http_response_code(403);
 	if(isset($_POST["fName"])){
-		echo "Form Submited to Database";
+		$jsonObject = json_encode( $_POST );
+		echo  $jsonObject;
 	} else {
 		echo "Form Error";
 	}

@@ -1,56 +1,49 @@
 var knucklebonePrototype = {
-	get: function(_URL, _CALLBACK){
+	form: {
+		submitFunc: null,
+		errors: null
+	},
+	ajaxReq: function(_URL, _CALLBACK, _TYPE, _FORM) {
 		var req = new XMLHttpRequest();
+		var self = this;
 		req.addEventListener('readystatechange',function(){
-			if(req.readyState === 4) _CALLBACK(req);
+			if(req.readyState === 4) _CALLBACK(self.ajaxRes(this));
 		});
-		req.addEventListener('error', knucklebonePrototype.error);
-		req.open("GET", _URL);
-
-		req.send();
-
+		req.open(_TYPE, _URL);
+		(_FORM) ? req.send(_FORM) : req.send() ;
+	},
+	ajaxRes: function(res) {
+		var r = {};
+		r.json = JSON.parse(res.response);
+		r.response = res.response;
+		r.responseText = res.responseText;
+		r.responseType = res.responseType;
+		r.responseURL = res.responseURL;
+		r.status = res.status;
+		r.statusText = res.statusText;
+		return r;
+	},
+	get: function(_URL, _CALLBACK){
+		this.ajaxReq(_URL, _CALLBACK, "GET");
 	},
 	post: function(_URL, _FORM, _CALLBACK){
-		var req = new XMLHttpRequest();
-	
-		req.addEventListener('readystatechange',function(){
-			if(req.readyState === 4) _CALLBACK(req);
-		});
-		req.addEventListener('error', knucklebonePrototype.error);
-		req.open("POST", _URL);
-		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		req.send(_FORM_DATA);
-	},
-	postForm: function(_URL, _FORM, _CALLBACK){
-		var req = new XMLHttpRequest();
-		var processedForm = knucklebonePrototype.processForm(_FORM);
-		req.addEventListener('readystatechange',function(){
-			if(req.readyState === 4) _CALLBACK(req);
-		});
-		req.addEventListener('error', knucklebonePrototype.error);
-		req.open("POST", _URL);
-		req.send(processedForm);
-	},
-	formListener: function(_URL, _FORM, _CALLBACK){
-		_form = _FORM;
-		_form.addEventListener('submit',function(evt){
+		var self = this;
+		self.form.data = _FORM;
+		self.form.data.addEventListener('submit',function(evt){
 			evt.preventDefault();
-			knucklebonePrototype.postForm(_URL, _form, _CALLBACK);
+			if(self.form.submitFunc != null) self.form.submitFunc();
+			if(self.form.errors === true) return;
+			self.ajaxReq(_URL, _CALLBACK, "POST", self.formify(_FORM));
 		});
 	},
-	processForm: function(_FORM){
+	formify: function(_FORM){
 		var fD = new FormData(_FORM);
 		return fD;
 	}
 };
 
-function knucklebone(STARTFUNCTION) {
-	if(STARTFUNCTION){
-			STARTFUNCTION();
-	}
-	var newKnucklebone = Object.create(knucklebonePrototype);
-	newKnucklebone.preCall = function(_FUNCTION) {
-		_FUNCTION();
-	}
-	return newKnucklebone;
+function knucklebone(onStart, isForm) {
+	var kb = Object.create(knucklebonePrototype);
+	if(onStart) (isForm && isForm === true) ? (kb.form.submitFunc = onStart) : onStart() ;
+	return kb;
 }
