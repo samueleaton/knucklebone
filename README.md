@@ -1,8 +1,8 @@
 # knucklebone.js
 Lightweight, minimal ajax library
 
-##### _Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET (as GET was intended), or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
-
+_Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET (as GET was intended), or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
+- - -
 ## Before you can play
 ##### Don't Forget to add knucklebone __*before*__ your scripts:
 ```html
@@ -96,7 +96,7 @@ JavaScript
 // store initialized knucklebone into variable
 var myAJAX = knucklebone(coolFunc, true);
 // add post method
-myAJAX.post("process.php", superForm, myCallback);
+myAJAX.post(URL, superForm, myCallback);
 
 // define function to call when form is submitted
 function coolFunc(){

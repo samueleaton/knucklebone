@@ -1,9 +1,6 @@
-// v1.0
-var knucklebonePrototype = {
-	form: {
-		submitFunc: null,
-		errors: null
-	},
+// v0.1.0
+var KBP = {
+	form: {},
 	ajaxReq: function(_URL, _CALLBACK, _TYPE, _FORM) {
 		var req = new XMLHttpRequest();
 		var self = this;
@@ -44,7 +41,7 @@ var knucklebonePrototype = {
 };
 
 function knucklebone(onStart, isForm) {
-	var kb = Object.create(knucklebonePrototype);
+	var kb = Object.create(KBP);
 	if(onStart) (isForm && isForm === true) ? (kb.form.submitFunc = onStart) : onStart() ;
 	return kb;
 }
