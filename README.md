@@ -72,10 +72,10 @@ Pass the whole form to knucklebone, it'll do the rest:
 knucklebone().post(URL, formObject, myCallback);
 ```
 
-#####Run a function when the form submits:
+#####Run a function when the form submits (before ajax completes):
 ```javascript
-// 2nd param "true" means call function only if form is submitted.
-// Otherwise it will run the function immediately
+// 2nd param "true" means call function only if user submits form.
+// Otherwise it will run the function immediately when loaded
 knucklebone(coolFunc, true).post(URL, formObject, myCallback);
 
 function coolFunc(){
@@ -100,8 +100,8 @@ myAJAX.post(URL, superForm, myCallback);
 
 // define function to call when form is submitted
 function coolFunc(){
-	// setting your ajax object's form.error property to true
-	// prevents ajax call if field is blank
+	// Setting your ajax object's form.errors property to true prevents ajax call
+	// This prevents ajax if if superField is blank
 	if(superField.value.length < 1) myAJAX.form.errors = true; 
 	// dont forget to set it back to false if no errors
 	else myAJAX.form.errors = false; 

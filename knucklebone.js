@@ -1,37 +1,36 @@
 // v0.1.0
 var KBP = {
 	form: {},
-	ajaxReq: function(_URL, _CALLBACK, _TYPE, _FORM) {
-		var req = new XMLHttpRequest();
+	rqst: function(_URL, _CALLBACK, _TYPE, _FORM) {
+		var _req = new XMLHttpRequest();
 		var self = this;
-		req.addEventListener('readystatechange',function(){
-			if(req.readyState === 4) _CALLBACK(self.ajaxRes(this));
+		_req.addEventListener('readystatechange',function(){
+			if(_req.readyState === 4) _CALLBACK(self.res(this));
 		});
-		req.open(_TYPE, _URL);
-		(_FORM) ? req.send(_FORM) : req.send() ;
+		_req.open(_TYPE, _URL);
+		(_FORM) ? _req.send(_FORM) : _req.send() ;
 	},
-	ajaxRes: function(res) {
+	res: function(_res) {
 		var r = {};
-		r.json = JSON.parse(res.response);
-		r.response = res.response;
-		r.responseText = res.responseText;
-		r.responseType = res.responseType;
-		r.responseURL = res.responseURL;
-		r.status = res.status;
-		r.statusText = res.statusText;
+		r.json = JSON.parse(_res.response);
+		r.response = _res.response;
+		r.responseType = _res.responseType;
+		r.responseURL = _res.responseURL;
+		r.status = _res.status;
+		r.statusText = _res.statusText;
 		return r;
 	},
 	get: function(_URL, _CALLBACK){
-		this.ajaxReq(_URL, _CALLBACK, "GET");
+		this.rqst(_URL, _CALLBACK, "GET");
 	},
 	post: function(_URL, _FORM, _CALLBACK){
 		var self = this;
 		self.form.data = _FORM;
 		self.form.data.addEventListener('submit',function(evt){
 			evt.preventDefault();
-			if(self.form.submitFunc != null) self.form.submitFunc();
+			if(self.form.submit != null) self.form.submit();
 			if(self.form.errors === true) return;
-			self.ajaxReq(_URL, _CALLBACK, "POST", self.formify(_FORM));
+			self.rqst(_URL, _CALLBACK, "POST", self.formify(_FORM));
 		});
 	},
 	formify: function(_FORM){
@@ -42,6 +41,6 @@ var KBP = {
 
 function knucklebone(onStart, isForm) {
 	var kb = Object.create(KBP);
-	if(onStart) (isForm && isForm === true) ? (kb.form.submitFunc = onStart) : onStart() ;
+	if(onStart) (isForm && isForm === true) ? (kb.form.submit = onStart) : onStart() ;
 	return kb;
 }
