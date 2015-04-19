@@ -1,7 +1,7 @@
 # knucklebone.js
-Lightweight minimal ajax library
+Lightweight, minimal ajax library
 ---
-##### _Knucklebone tries to fill a very specific niche to be more useful and minimal. If you want to get any kind of data through AJAX through GET (as was intended) or if you want to send form data through POST, then knucklebone will be perfect_
+##### _Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET (as GET was intended), or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
 ---
 ## Before you can play
 ##### Don't Forget to add knucklebone __*before*__ your scripts:
@@ -12,7 +12,8 @@ Lightweight minimal ajax library
 </body>
 ```
 
-## How to play knucklebone (EXAMPLES)
+
+## How to play knucklebones (examples)
 
 ###Getting Data With Ajax
 
@@ -59,6 +60,7 @@ So you should just be able to this (asynchronously):
 ```javascript
 knucklebone().get(URL1, callback1); // one set of data
 knucklebone().get(URL2, callback2); // second set of data
+// each knucklebone() produces an independent, non-conflicting ajax call
 ```
 
 ###Posting Form Data With Ajax
@@ -67,13 +69,14 @@ knucklebone().get(URL2, callback2); // second set of data
 Pass the whole form to knucklebone, it'll do the rest:
 ```javascript
 // e.g. var formObject = document.getElemenyById("myform");
-knucklebone().post(URL, formObject, finish);
+knucklebone().post(URL, formObject, myCallback);
 ```
 
 #####Run a function when the form submits:
 ```javascript
-// 2nd param "true" means call function only if form submitted
-knucklebone(coolFunc, true).post(URL, formObject, finish);
+// 2nd param "true" means call function only if form is submitted.
+// Otherwise it will run the function immediately
+knucklebone(coolFunc, true).post(URL, formObject, myCallback);
 
 function coolFunc(){
 	// do something cool when form submitted
@@ -93,12 +96,12 @@ JavaScript
 // store initialized knucklebone into variable
 var myAJAX = knucklebone(coolFunc, true);
 // add post method
-myAJAX.post("process.php", superForm, finish);
+myAJAX.post("process.php", superForm, myCallback);
 
 // define function to call when form is submitted
 function coolFunc(){
 	// setting your ajax object's form.error property to true
-	// prevents ajax call 
+	// prevents ajax call if field is blank
 	if(superField.value.length < 1) myAJAX.form.errors = true; 
 	// dont forget to set it back to false if no errors
 	else myAJAX.form.errors = false; 
