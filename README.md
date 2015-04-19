@@ -1,7 +1,7 @@
-# knucklebone.js 
+# <img src="logo.png" style="display:inline; max-width: 100px;"> knucklebone.js 
 
 
-<img src="logo.png" style="display:block;height:80px;">
+
 
 
 Lightweight, minimal ajax library
