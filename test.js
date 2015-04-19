@@ -7,7 +7,7 @@
 
 var superForm = document.getElementById("superForm");
 
-knucklebone().formListener("http://localhost/~samueleaton1/Github/knucklebone.js/process.php", superForm, finish);
+knucklebone().formListener("process.php", superForm, finish);
 
 // knucklebone().get("http://localhost/~samueleaton1/Github/knucklebone.js/data.json", finish).preCall(start);
 

@@ -6,18 +6,20 @@ var knucklebonePrototype = {
 		});
 		req.addEventListener('error', knucklebonePrototype.error);
 		req.open("GET", _URL);
+
 		req.send();
+
 	},
 	post: function(_URL, _FORM, _CALLBACK){
-		// var req = new XMLHttpRequest();
+		var req = new XMLHttpRequest();
 	
-		// req.addEventListener('readystatechange',function(){
-		// 	if(req.readyState === 4) _CALLBACK(req);
-		// });
-		// req.addEventListener('error', knucklebonePrototype.error);
-		// req.open("POST", _URL);
-		// httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		// req.send(_FORM_DATA);
+		req.addEventListener('readystatechange',function(){
+			if(req.readyState === 4) _CALLBACK(req);
+		});
+		req.addEventListener('error', knucklebonePrototype.error);
+		req.open("POST", _URL);
+		req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		req.send(_FORM_DATA);
 	},
 	postForm: function(_URL, _FORM, _CALLBACK){
 		var req = new XMLHttpRequest();
