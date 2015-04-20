@@ -14,6 +14,7 @@ _Knucklebone tries to fill a very specific niche so as to be more useful/minimal
 </body>
 ```
 
+- - -
 
 ## How to play knucklebones (examples)
 
@@ -147,6 +148,7 @@ knucklebone().get(URL, function(res){
 - status  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
 - statusText  (the text equivalent to the status code)
 - success  (BOOL true if status code is successful, else false)
+
 - - -
 
 ####Why the name "knucklebone"?
