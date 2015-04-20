@@ -1,4 +1,3 @@
-// v0.1.1
 var KBP = {
 	form: {},
 	rqst: function(_URL, _CALLBACK, _TYPE, _FORM) {
