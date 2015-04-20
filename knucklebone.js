@@ -1,4 +1,4 @@
-// v0.1.0
+// v0.1.1
 var KBP = {
 	form: {},
 	rqst: function(_URL, _CALLBACK, _TYPE, _FORM) {
@@ -18,6 +18,7 @@ var KBP = {
 		r.responseURL = _res.responseURL;
 		r.status = _res.status;
 		r.statusText = _res.statusText;
+		r.success = (r.status>=200 && r.status<300)?true:false;
 		return r;
 	},
 	get: function(_URL, _CALLBACK){
