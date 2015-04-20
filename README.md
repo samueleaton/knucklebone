@@ -1,9 +1,9 @@
 <img src="logo.png"> 
 # knucklebone.js 
 
-Lightweight, minimal ajax library
+Lightweight, ajax library with single-line AJAX call for most cases.
 
-_Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET (as GET was intended), or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
+_Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET, or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
 - - -
 ## Before you can play
 ##### Don't Forget to add knucklebone __*before*__ your scripts:
@@ -109,6 +109,28 @@ function coolFunc(){
 	else myAJAX.form.errors = false; 
 };
 ```
+
+###Working with the Response Object
+
+####Tapping into the responpse, whether a success or error:
+The response is always passed to the callback
+```javascript
+knucklebone().get(URL, myCallback);
+
+function myCallback(res){ // Name it anything. We named it "res"
+	console.log(res); 
+}; 
+```
+####All of the properties of the response object:
+- json // if expecting json, this holds the parsed object
+- responseType  // can be "json", "document", "text", etc.
+- response  // can ba an ArrayBuffer, Blob, Document, JavaScript object, or a string
+- responseText  // a string or null if ajax failed
+- responseURL  // the origin of the response
+- status  // the http status code (200, 404, etc.)
+- statusText  // the text equivalent to the status code
+- success  // BOOL true if status code is successful, else false
 - - -
-####Why "knucklebone"?
+
+####Why the name "knucklebone"?
 [This](https://en.wikipedia.org/wiki/Knucklebones) is why. Get it? 
