@@ -1,5 +1,6 @@
-<img src="logo.png"> 
-# knucklebone.js 
+# knucklebone.js &nbsp; <img src="logo.png" height="50" align="right"> 
+
+[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.js.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone.js) <img src="https://img.shields.io/badge/license-MIT-blue.svg">
 
 Lightweight, ajax library with single-line AJAX call for most cases.
 
