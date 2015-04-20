@@ -121,15 +121,32 @@ function myCallback(res){ // Name it anything. We named it "res"
 	console.log(res); 
 }; 
 ```
+or
+```javascript
+knucklebone().get(URL, function(res){
+	console.log(res); 
+});
+```
+
+####Determining if call was successfull
+```javascript
+knucklebone().get(URL, function(res){
+	if(res.success){
+		// yay!
+	} else {
+		// boo-hoo!
+	}
+});
+```
 ####All of the properties of the response object:
-- json // if expecting json, this holds the parsed object
-- responseType  // can be "json", "document", "text", etc.
-- response  // can ba an ArrayBuffer, Blob, Document, JavaScript object, or a string
-- responseText  // a string or null if ajax failed
-- responseURL  // the origin of the response
-- status  // the http status code (200, 404, etc.)
-- statusText  // the text equivalent to the status code
-- success  // BOOL true if status code is successful, else false
+- json  (if expecting json, this holds the parsed object)
+- responseType  (can be "json", "document", "text", etc.)
+- response  (can ba an ArrayBuffer, Blob, Document, JavaScript object, or a string)
+- responseText  (a string or null if ajax failed)
+- responseURL  (the origin of the response)
+- status  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
+- statusText  (the text equivalent to the status code)
+- success  (BOOL true if status code is successful, else false)
 - - -
 
 ####Why the name "knucklebone"?
