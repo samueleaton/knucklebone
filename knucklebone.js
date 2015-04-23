@@ -11,7 +11,11 @@ var KBP = {
 	},
 	res: function(_res) {
 		var r = {};
-		r.json = JSON.parse(_res.response);
+		try {
+			r.json = JSON.parse(_res.response);
+		} catch(e){
+			r.json = null;
+		}
 		r.response = _res.response;
 		r.responseType = _res.responseType;
 		r.responseURL = _res.responseURL;
