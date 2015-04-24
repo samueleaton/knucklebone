@@ -1,5 +1,4 @@
 var KBP = {
-	form: {},
 	rqst: function(_URL, _CALLBACK, _TYPE, _FORM) {
 		var _req = new XMLHttpRequest();
 		var self = this;
@@ -45,6 +44,7 @@ var KBP = {
 
 function knucklebone(onStart, isForm) {
 	var kb = Object.create(KBP);
+	kb.form = {};
 	if(onStart) (isForm && isForm === true) ? (kb.form.submit = onStart) : onStart() ;
 	return kb;
 }
