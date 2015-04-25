@@ -112,6 +112,9 @@ function coolFunc(){
 };
 ```
 
+#####Form Submit Listener
+There is no need to add a form submit listener before using knucklebone. In fact, knucklebone will automatically add a form submit listener. Therefore, if you use knucklebone inside a form submit handler, it will not run until you submit the form the second time. See the above examples for how to properly use knucklebone with a form.
+
 ###Working with the Response Object
 
 ####Tapping into the responpse, whether a success or error:
