@@ -7,7 +7,7 @@ Lightweight, ajax library with single-line AJAX call for most cases.
 _Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET, or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
 - - -
 ## Before you can play
-##### Don't Forget to add knucklebone __*before*__ your scripts:
+##### Don't Forget to add knucklebone __*before*__ your scripts, not after:
 ```html
 ...
 	<script type="text/javascript" src="knucklebone.js"></script>
@@ -30,7 +30,13 @@ function myCallback(res){
 };  
 ```
 
-__HINT:__ If you are expecting a JSON file back:
+##### Passing parameter with a Get request
+Get parameters are just passed through the URL, like they always are:
+```javascript
+knucklebone().get(URL+"?fName=Sam&age=24", callback);
+```
+
+__HINT:__ If you are expecting a JSON file back, its already parsed:
 ```javascript
 knucklebone().get(URL, myCallback);
 
