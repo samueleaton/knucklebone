@@ -1,0 +1,20 @@
+{
+	"name": "knucklebone",
+	"description":"Lightweight, AJAX library for the client",
+	"main":"knucklebone.js",
+	"keywords": [
+		"library",
+		"lightweight"
+    "AJAX",
+    "ajax",
+    "json"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/eaton11/knucklebone.js",
+	"ignore": [
+		"bower.json",
+		"logo.png",
+		"README.md",
+		".*"
+	]
+}
