@@ -151,5 +151,11 @@ knucklebone().get(URL, function(res){
 
 - - -
 
+####Feature Roadmap
+- [] Detect if Request has been sent, but Response not yet returned (a.k.a. Response Pending)
+- [] Be able to *abort* and *resend* an Ajax call
+
+- - -
+
 ####Why the name "knucklebone"?
 [This](https://en.wikipedia.org/wiki/Knucklebones) is why. Get it? 
