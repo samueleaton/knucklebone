@@ -1,10 +1,10 @@
 {
 	"name": "knucklebone",
-	"description":"Lightweight, AJAX library for the client",
-	"main":"knucklebone.js",
+	"description": "Lightweight, AJAX library for the client",
+	"main": "knucklebone.js",
 	"keywords": [
 		"library",
-		"lightweight"
+		"lightweight",
     "AJAX",
     "ajax",
     "json"
