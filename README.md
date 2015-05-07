@@ -1,6 +1,13 @@
-# knucklebone.js &nbsp; <img src="logo.png" height="50" align="right"> 
 
-[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.js.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone.js) <img src="https://img.shields.io/badge/license-MIT-blue.svg">
+<br>
+<p align="center">
+<img src="logo.png"> 	
+</p>
+<br>
+
+# knucklebone.js
+
+[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.js.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone.js) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
 Lightweight, ajax library with single-line AJAX call for most cases.
 
@@ -140,20 +147,20 @@ knucklebone().get(URL, function(res){
 });
 ```
 ####All of the properties of the response object:
-- json  (if expecting json, this holds the parsed object)
-- responseType  (can be "json", "document", "text", etc.)
-- response  (can ba an ArrayBuffer, Blob, Document, JavaScript object, or a string)
-- responseText  (a string or null if ajax failed)
-- responseURL  (the origin of the response)
-- status  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
-- statusText  (the text equivalent to the status code)
-- success  (BOOL true if status code is successful, else false)
+- **json**  (if expecting json, this holds the parsed object)
+- **responseType**  (can be "json", "document", "text", etc.)
+- **response**  (can ba an ArrayBuffer, Blob, Document, JavaScript object, or a string)
+- **responseText**  (a string or null if ajax failed)
+- **responseURL**  (the origin of the response)
+- **status**  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
+- **statusText**  (the text equivalent to the status code)
+- **success**  (BOOL true if status code is successful, else false)
 
 - - -
 
 ####Feature Roadmap
-- [] Detect if Request has been sent, but Response not yet returned (a.k.a. Response Pending)
-- [] Be able to *abort* and *resend* an Ajax call
+- Detect if Request has been sent, but Response not yet returned (a.k.a. Response Pending)
+- Be able to *abort* and *resend* an Ajax call
 
 - - -
 
