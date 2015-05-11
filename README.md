@@ -7,7 +7,7 @@
 
 # knucklebone.js
 
-[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.js.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone.js) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
+[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
 Lightweight, ajax library with single-line AJAX call for most cases.
 
