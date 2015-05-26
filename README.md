@@ -14,6 +14,10 @@ Lightweight, ajax library with single-line AJAX call for most cases.
 _Knucklebone tries to fill a very specific niche so as to be more useful/minimalistic. If you want to asynchronously get data through GET, or if you want to asynchronously send form data through POST, then knucklebone will be perfect._
 - - -
 
+#### NOTE: BIG 1.0 changes are comming this week (May 26, 2015). A complete redesign from the ground up. Knucklebone will implement a more `Promise` style design.
+- - -
+
+
 ## How to play knucklebones (examples)
 
 ###Getting Data With Ajax
