@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+<form id="superForm">
+	<input name="fname">
+	<input name="lname">
+	<input type="submit" name="submit">
+</form>
+
+<script src="knucklebone1.0.js"></script>
+<script>
+	var superForm = document.getElementById('superForm');
+	console.log(superForm.tagName.toLowerCase());
+
+
+// var catAjax = knucklebone()
+// 	.get("data.php?cats")
+// 		.success(function(res){
+// 			console.log("meow:",res);
+// 		})
+// 		.error(function(res){
+// 			console.log("error: ",res);
+// 		});
+
+// 		console.log(catAjax);
+
+// aborts as expected
+var catAjax = knucklebone()
+	.get("data.php?cats")
+		.success(function(res){
+			console.log("meow:",res);
+		})
+		.error(function(res){
+			console.log("error: ",res);
+		}).abort().again();
+
+
+// knucklebone().post("test.php", superForm).success(function(res){
+// 	console.log(res);
+// });
+
+	// console.log(knucklebone().post("test.php", {"name":"sam"}, {form:false}).success(function(res){
+	// 	console.log("we are solid, mang:",res);
+	// }));
+
+
+
+</script>
+</body>
+</html>

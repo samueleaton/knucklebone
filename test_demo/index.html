@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+<form id="superForm">
+	<input name="fname">
+	<input name="lname">
+	<input type="submit" name="submit">
+</form>
+
+<script src="knucklebone_2.js"></script>
+<script>
+	// knucklebone().get("data.json", function(res){
+	// 	console.log(res);
+	// });
+
+	// knucklebone().get("functions.js", function(res){
+	// 	console.log(res);
+	// 	var scriptTag = document.createElement("script");
+	// 	scriptTag.textContent = res.response;
+	// 	document.body.appendChild(scriptTag);
+	// 	sayHello();
+	// });
+
+	// console.log(
+	// 	knucklebone().get("functions.js", function(res){
+	// 		console.log(res);
+	// 		// var scriptTag = document.createElement("script");
+	// 		// scriptTag.textContent = res.response;
+	// 		// document.body.appendChild(scriptTag);
+	// 		// sayHello();
+	// 	})
+	// );
+
+// knucklebone()
+// .get("functions.js", function(){})
+// .then(function(action){
+// 	action()
+// });
+
+knucklebone()
+.get("functions.js", function(){}).success(function(){
+	console.log("YAY!!!");
+});
+
+
+//  ======
+// knucklebone().get("data.json", function(res){
+	// 	console.log(res);
+	// });
+
+	// knucklebone().get("functions.js", function(res){
+	// 	console.log(res);
+	// 	var scriptTag = document.createElement("script");
+	// 	scriptTag.textContent = res.response;
+	// 	document.body.appendChild(scriptTag);
+	// 	sayHello();
+	// });
+
+	// console.log(
+	// 	knucklebone().get("functions.js", function(res){
+	// 		console.log(res);
+	// 		// var scriptTag = document.createElement("script");
+	// 		// scriptTag.textContent = res.response;
+	// 		// document.body.appendChild(scriptTag);
+	// 		// sayHello();
+	// 	})
+	// );
+
+// knucklebone()
+// .get("functions.js", function(){})
+// .then(function(action){
+// 	action()
+// });
+var ajax1 = knucklebone().get("functions.js")
+	.success(function(res){
+		console.log("GOOD! The data is: ", res);
+	}).error(function(){
+		console.log("ERROR!!!");
+	});
+
+var ajax2 = knucklebone().get("poopoo.js")
+	.success(function(res){
+		console.log("GOOD! The data is: ", res);
+	}).error(function(){
+		console.log("ERROR!!!");
+	});
+
+console.log("ajax1: ",ajax1.pending);
+console.log("ajax2: ",ajax2.pending);
+
+// setInterval(function(){
+// console.log("ajax1: ",ajax1.pending);
+// },500);
+// setInterval(function(){
+// console.log("ajax2: ",ajax2.pending);
+// },500);
+</script>
+</body>
+</html>
