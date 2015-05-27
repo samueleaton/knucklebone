@@ -55,7 +55,7 @@ function knucklebone(_OPTIONS) {
 		},
 
 		error: function(_CALLBACK) {
-			this.utils.queue.error = _CALLBACK;
+			this.utils.error = _CALLBACK;
 			return this;
 		},
 
@@ -168,7 +168,13 @@ function knucklebone(_OPTIONS) {
 									// if stream, then call:
 										// _CURRENTOBJECT.onError(_RESPONSE);
 									// else
-										_CURRENTOBJECT.res = _RESPONSE; // and call batch later
+										self.resData.push(_RESPONSE);
+										if(self.resData.length === self.queue.length){
+											(self.resData.length === 1) ? self.error(self.resData[0]) : self.error(self.resData);
+											KBP.utils = undefined;
+										}
+
+										// _CURRENTOBJECT.res = _RESPONSE; // and call batch later
 									console.log("error!");
 								}
 								// console.log("");
@@ -211,3 +217,5 @@ function knucklebone(_OPTIONS) {
 	return KBP;
 	// return kb;
 }
+
+

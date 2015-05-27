@@ -3,102 +3,199 @@
 <head>
 	<title></title>
 	<meta charset="UTF-8">
+	<style type="text/css">
+	body {
+		font-family:"lucida grande";
+	}
+		input {
+			font-size:1.5em;
+		}
+		#output {
+			font-size:1.5em;
+			padding: 20px;
+			margin: 20px;
+			/*border: 2px solid royalblue;*/
+		}
+	</style>
 </head>
 <body>
 
 <form id="superForm">
-	<input name="fname">
-	<input name="lname">
+	<input id="fileName" name="fileName" placeholder="File Name">
+
 	<input type="submit" name="submit">
 </form>
 
-<script src="knucklebone_2.js"></script>
+<div id="output"></div>
+
+
+<script src="knucklebone1.0.js"></script>
 <script>
-	// knucklebone().get("data.json", function(res){
-	// 	console.log(res);
-	// });
 
-	// knucklebone().get("functions.js", function(res){
-	// 	console.log(res);
-	// 	var scriptTag = document.createElement("script");
-	// 	scriptTag.textContent = res.response;
-	// 	document.body.appendChild(scriptTag);
-	// 	sayHello();
-	// });
 
-	// console.log(
-	// 	knucklebone().get("functions.js", function(res){
-	// 		console.log(res);
-	// 		// var scriptTag = document.createElement("script");
-	// 		// scriptTag.textContent = res.response;
-	// 		// document.body.appendChild(scriptTag);
-	// 		// sayHello();
-	// 	})
-	// );
 
-// knucklebone()
-// .get("functions.js", function(){})
-// .then(function(action){
-// 	action()
-// });
 
-knucklebone()
-.get("functions.js", function(){}).success(function(){
-	console.log("YAY!!!");
+var form = document.getElementById("superForm");
+
+var output = document.getElementById("output");
+
+
+
+
+
+
+
+
+
+
+
+
+
+var fileName = document.getElementById("fileName");
+
+
+
+
+
+fileName.addEventListener("keyup", function(e){
+	// e.preventDefault();
+
+	if(fileName.value.length > 0){
+
+
+		knucklebone()
+
+			.get(fileName.value)
+
+			.success(function(res){
+				output.innerHTML = "";
+				var newImage = new Image();
+				newImage.src=res.responseURL;
+				output.appendChild(newImage);
+				console.log(res);
+			})
+
+			.error(function(res){
+				output.innerHTML = "No Results";
+			});
+
+
+
+
+	} else {
+		output.textContent = "";
+	}
+
+
+
+
 });
 
 
-//  ======
-// knucklebone().get("data.json", function(res){
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// knucklebone().get(["cats.php", "dogs.json", "mice.json"])
+// 	.success(function(res){
+// 			console.log(res);
+// 	});
+
+
+	// knucklebone()
+	// .get("mice.json")
+	// .success(function(res){
 	// 	console.log(res);
 	// });
-
-	// knucklebone().get("functions.js", function(res){
-	// 	console.log(res);
-	// 	var scriptTag = document.createElement("script");
-	// 	scriptTag.textContent = res.response;
-	// 	document.body.appendChild(scriptTag);
-	// 	sayHello();
-	// });
-
-	// console.log(
-	// 	knucklebone().get("functions.js", function(res){
-	// 		console.log(res);
-	// 		// var scriptTag = document.createElement("script");
-	// 		// scriptTag.textContent = res.response;
-	// 		// document.body.appendChild(scriptTag);
-	// 		// sayHello();
-	// 	})
-	// );
-
-// knucklebone()
-// .get("functions.js", function(){})
-// .then(function(action){
-// 	action()
+// AJAX.get("cats.json").success(function(cats){
+// 	console.log("CATS: ", cats.json);
 // });
-var ajax1 = knucklebone().get("functions.js")
-	.success(function(res){
-		console.log("GOOD! The data is: ", res);
-	}).error(function(){
-		console.log("ERROR!!!");
-	});
 
-var ajax2 = knucklebone().get("poopoo.js")
-	.success(function(res){
-		console.log("GOOD! The data is: ", res);
-	}).error(function(){
-		console.log("ERROR!!!");
-	});
+// AJAX.get("data.json").success(function(data){
+// 	console.log("DATA: ", data.json);
+// });
 
-console.log("ajax1: ",ajax1.pending);
-console.log("ajax2: ",ajax2.pending);
 
-// setInterval(function(){
-// console.log("ajax1: ",ajax1.pending);
-// },500);
-// setInterval(function(){
-// console.log("ajax2: ",ajax2.pending);
-// },500);
+
+
+
+
+
+
+
+	// var superForm = document.getElementById('superForm');
+	// console.log(superForm.tagName.toLowerCase());
+
+
+// var catAjax = knucklebone()
+// 	.get("data.php?cats")
+// 		.success(function(res){
+// 			console.log("meow:",res);
+// 		})
+// 		.error(function(res){
+// 			console.log("error: ",res);
+// 		});
+
+// 		console.log(catAjax);
+
+// aborts as expected
+// var catAjax = knucklebone()
+// 	.get("data.php?cats")
+// 		.success(function(res){
+// 			console.log("meow:",res);
+// 		})
+// 		.error(function(res){
+// 			console.log("error: ",res);
+// 		}).abort().again();
+
+
+// knucklebone().post("test.php", superForm).success(function(res){
+// 	console.log(res);
+// });
+
+	// console.log(knucklebone().post("test.php", {"name":"sam"}, {form:false}).success(function(res){
+	// 	console.log("we are solid, mang:",res);
+	// }));
+
+
+
 </script>
 </body>
 </html>
