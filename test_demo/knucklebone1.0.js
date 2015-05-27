@@ -1,11 +1,15 @@
 function knucklebone(_OPTIONS) {
+	// console.log(stream);
 	var KBP = {
+		options:{
+			stream: (_OPTIONS===undefined)?false:( (_OPTIONS["stream"]===true)?true:false )
+		},
 		abort: function(){
-			self = this;
-			self.utils._XMLHttpRequest.abort();
-			self.utils.info.permissionToFire = false;
-			self.utils.info.aborted = true;
-			console.log("%cknucklebone: %cAJAX REQUEST ABORTED", "color:royalblue;text-shadow:0 0 5px royalblue;", "color:orange;text-shadow:0 0 6px orange;");
+			// self = this;
+			// self.utils._XMLHttpRequest.abort();
+			// self.utils.info.permissionToFire = false;
+			// self.utils.info.aborted = true;
+			// console.log("%cknucklebone: %cAJAX REQUEST ABORTED", "color:royalblue;text-shadow:0 0 5px royalblue;", "color:orange;text-shadow:0 0 6px orange;");
 			return self;
 
 			// abort actually aborst the call after it has started. "pause" simply doesn't let the call start.
@@ -33,81 +37,82 @@ function knucklebone(_OPTIONS) {
 
 			return self;
 		},
+
 		play: function(){
 			self = this;
 			self.utils.rqst();
 			return self;
 		},
+
 		pending: function(){
 			return this.utils.info.pending;
 		},
-		complete: function(){
-			return this.utils.info.complete;
-		},
+
 		success: function(_CALLBACK){
-			this.utils.queue.success = _CALLBACK;
+			this.utils.success = _CALLBACK;
+			// console.log(this.utils.success);
 			return this;
 		},
+
 		error: function(_CALLBACK) {
 			this.utils.queue.error = _CALLBACK;
 			return this;
 		},
+
 		get: function(_URL, _OPTIONS){
-			// i may need to put this in a queue, or at least check a queue
-			// update the current call
 			var self = this;
-			self.utils.mapCall();
-			if(_OPTIONS !== undefined){
-				var optionsKeys = Object.keys(_OPTIONS);
-				for(var i = 0, ii = optionsKeys.length; i < ii; i++){
-					self.utils.info.options[optionsKeys[i]] = _OPTIONS[optionsKeys[i]];
+			if(typeof _URL === "string"){
+				self.utils.mapCall(_URL, _OPTIONS, "get");
+			} else if(Array.isArray(_URL)) {
+				for(var i = 0, ii=_URL.length; i<ii; i++){
+					self.utils.mapCall(_URL[i], _OPTIONS, "get");
 				}
 			}
-			self.utils.info.url = _URL; // move this to the mapCall method, move the _OPTIONS too. do it to the POST too.
-			self.utils.info.type = "get";
-			self.utils.rqst(); // UN-COMMENT
+			self.utils.rqst();
+			// if(!KBP.stream){ KBP.get = undefined; KBP.post = undefined;}
 			return this;
 		},
+
 		post: function(_URL, _DATA, _OPTIONS){
 			// i may need to put this in a queue, or at least check a queue
 			// update the current call
-			var self = this;
-			self.utils.mapCall();
-			self.utils.info.options.form = true;
-			self.utils.info.type = "post";
-			self.utils.info.url = _URL; // move this to the mapCall method, move the _OPTIONS too. do it to the POST too.
-			if(_OPTIONS !== undefined){
-				var optionsKeys = Object.keys(_OPTIONS);
-				for(var i = 0, ii = optionsKeys.length; i < ii; i++){
-					self.utils.info.options[optionsKeys[i]] = _OPTIONS[optionsKeys[i]];
-				}
-			} else {
-				console.log("no options set | 'form' is default for post", self);
-				self.utils.info.options.form = true;
-			}
-			self.utils.info.data = _DATA;
-			if(self.utils.info.options.form && _DATA.tagName !== undefined && _DATA.tagName.toLowerCase() == "form"){
+			// var self = this;
+			// self.utils.mapCall();
+			// self.utils.info.options.form = true;
+			// self.utils.info.type = "post";
+			// self.utils.info.url = _URL; // move this to the mapCall method, move the _OPTIONS too. do it to the POST too.
+			// if(_OPTIONS !== undefined){
+			// 	var optionsKeys = Object.keys(_OPTIONS);
+			// 	for(var i = 0, ii = optionsKeys.length; i < ii; i++){
+			// 		self.utils.info.options[optionsKeys[i]] = _OPTIONS[optionsKeys[i]];
+			// 	}
+			// } else {
+			// 	console.log("no options set | 'form' is default for post", self);
+			// 	self.utils.info.options.form = true;
+			// }
+			// self.utils.info.data = _DATA;
+			// if(self.utils.info.options.form && _DATA.tagName !== undefined && _DATA.tagName.toLowerCase() == "form"){
 
 				
-				_DATA.addEventListener('submit',function(evt){
-					evt.preventDefault();
-					self.utils.info.data = self.utils.formify(_DATA); // sends data to utils.info
-					self.utils.queue.onFormSubmit();
+			// 	_DATA.addEventListener('submit',function(evt){
+			// 		evt.preventDefault();
+			// 		self.utils.info.data = self.utils.formify(_DATA); // sends data to utils.info
+			// 		self.utils.queue.onFormSubmit();
 
-					if(self.utils.info.permissionToFire){
-						console.log("permission granted. fired it.");
-						self.utils.rqst();
-					} else {
-						console.log("you do not have permission.");
-						return;
-					}
+			// 		if(self.utils.info.permissionToFire){
+			// 			console.log("permission granted. fired it.");
+			// 			self.utils.rqst();
+			// 		} else {
+			// 			console.log("you do not have permission.");
+			// 			return;
+			// 		}
 					
-				});
-			} else {
-				console.log("other method using post: ", self.data);
-				// set up the way to 
-			}
-			return self;
+			// 	});
+			// } else {
+			// 	console.log("other method using post: ", self.data);
+			// 	// set up the way to 
+			// }
+			// return self;
 		},
 		// put: function () {
 		// 	// add this
@@ -116,54 +121,65 @@ function knucklebone(_OPTIONS) {
 		// 	// add this
 		// },
 		utils: {
-			mapCall: function(){
+			mapCall: function(_URL,_OPTIONS,_TYPE){
 				var self = this; // utils
-				var template = {
-					options: {
-						form: false,
-						contentType: "json"
-					},
-					type: "get",
-					complete: false,
+				var newCall = {
+					url: _URL,
+					contentType: (_OPTIONS!==undefined)?_OPTIONS["contentType"]:((_TYPE==="get")?"json":"form"),
+					type: _TYPE,
 					pending: true,
 					res: {},
-					data: {},
 					aborted: false,
-					permissionToFire: true
+					permissionToFire: true,
+					onSuccess: null,
+					onError: null
 				};
-				self.info = Object.create(template);
-				console.log(self); //
+				if(newCall.type === "post"){
+					newCall.form = (_OPTIONS!==undefined)?_OPTIONS["form"]:true;
+				}
+				self.queue.push(newCall);
 			},
 			rqst: function() {
-				var self = this;
-				self._XMLHttpRequest = new XMLHttpRequest();
-				console.log("request_fired");
-				self._XMLHttpRequest.addEventListener('readystatechange',function(){
-					if(self._XMLHttpRequest .readyState === 4){ 
-						var response = self.res(this);
-						self.info.complete = true;
-						self.info.pending = false;
-						if(response.success){
-							self.queue.success(response)
-							console.log("success!");
-						} else {
-							self.queue.error(response)
-							console.log("error!");
-						}
-					}
-				});
-				console.log("request type: ",self.info.type);
-				self._XMLHttpRequest.open(self.info.type, self.info.url);
-				// (self.info.type=="post") ? self._XMLHttpRequest .send(self.info.data) : self._XMLHttpRequest .send() ;
-				if(self.info.type=="post") {
-					console.log("fired post request>", self.info.data);
-					self._XMLHttpRequest.send(self.info.data)
-				} else { 
-					console.log("fired get request");
-					self._XMLHttpRequest.send();
-				} 
+				var self = this; // utils
+				for (var i = 0, ii = self.queue.length; i<ii; i++) {
+					var _XMLHttpRequest = new XMLHttpRequest();
+					(function (_CURRENTOBJECT, _CURRENTCALL) {
+	          _CURRENTCALL.addEventListener('readystatechange', function(){
+              if(_CURRENTCALL.readyState === 4){ 
+								_CURRENTOBJECT.pending = false;
+								var _RESPONSE = self.beautifyRes(_CURRENTCALL);
+								if((_RESPONSE.status>=200 && _RESPONSE.status<300)?true:false){
+									// if stream, then call:
+									if(KBP.options.stream){
+										self.success(_RESPONSE);
+									}
+										// _CURRENTOBJECT.onSuccess(_RESPONSE);
+
+									// else
+									else
+									{
+										self.resData.push(_RESPONSE);
+										if(self.resData.length === self.queue.length){
+											(self.resData.length === 1) ? self.success(self.resData[0]) : self.success(self.resData);
+											KBP.utils = undefined;
+										}
+									}
+								} else {
+									// if stream, then call:
+										// _CURRENTOBJECT.onError(_RESPONSE);
+									// else
+										_CURRENTOBJECT.res = _RESPONSE; // and call batch later
+									console.log("error!");
+								}
+								// console.log("");
+							}
+            });
+	        })(self.queue[i], _XMLHttpRequest);
+					_XMLHttpRequest.open(self.queue[i].type, self.queue[i].url);
+					_XMLHttpRequest.send();
+				}
 			},
-			res: function(_res) {
+			beautifyRes: function(_res) {
 				var r = {};
 				try {
 					r.json = JSON.parse(_res.response);
@@ -175,21 +191,23 @@ function knucklebone(_OPTIONS) {
 				r.responseURL = _res.responseURL;
 				r.status = _res.status;
 				r.statusText = _res.statusText;
-				r.success = (r.status>=200 && r.status<300)?true:false;
 				return r;
 			},
+			resData:[],
 			formify: function(_FORM){
-				var fD = new FormData(_FORM);
-				return fD;
+				// var fD = new FormData(_FORM);
+				// return fD;
 			},
-			queue: {
-				success: function(){},
-				error: function(){},
-				onFormSubmit: function(){}
-			},
-			info:{}
+			queue: [],
+			success: null,
+			error: null,
+			pause: function(){
+
+			}
 		},
 	};
-	var kb = Object.create(KBP);
-	return kb;
+
+	// var kb = Object.create(KBP);
+	return KBP;
+	// return kb;
 }
