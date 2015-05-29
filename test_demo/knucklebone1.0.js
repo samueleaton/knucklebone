@@ -1,8 +1,18 @@
+var el=function(s){function t(s){var t=s.charAt(0);return"#"===t?e(document.getElementById(s.slice(1))):"."===t?n(document.getElementsByClassName(s.slice(1))):void 0}function e(s){return s.elified||(s.addClass=function(s){return-1===this.className.indexOf(s)&&(this.className=this.className.length>0?this.className+" "+s:s),this},s.rmClass=function(s){if(-1!==this.className.indexOf(s)){if(-1===this.className.indexOf(" "))return this.className="",this;for(var t="",e=this.className.split(" "),n=0;n<e.length;n++)e[n]!==s&&(t+=e[n]+" ");" "===t.substr(t.length-1)&&(t=t.slice(0,-1)),this.className=t}return this},s.hasClass=function(s){for(var t=this.className.split(" "),e=0;e<t.length;e++)if(t[e]===s)return!0;return!1},s.elified=!0),s}function n(s){for(var t=0,n=s.length;n>t;t++)e(s[t]);return s.addClass=function(s){for(var t=document.getElementsByClassName(s),n=0,i=t.length;i>n;n++)t[n].elified||e(t[n]);for(var n=0,i=this.length;i>n;n++)this[n].addClass(s);return this},s.rmClass=function(s){for(var t=0,e=this.length;e>t;t++)this[t].rmClass(s);return this},s.each=function(s){for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)},s}return t(s)};
+
+
+// s.each=function(s){
+// 	for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)
+// }
+
 function knucklebone(_OPTIONS) {
 	// console.log(stream);
 	var KBP = {
 		options:{
 			stream: (_OPTIONS===undefined)?false:( (_OPTIONS["stream"]===true)?true:false )
+		},
+		each: function (){
+			// do what you did in "el"
 		},
 		abort: function(){
 			// self = this;
@@ -72,7 +82,6 @@ function knucklebone(_OPTIONS) {
 			// if(!KBP.stream){ KBP.get = undefined; KBP.post = undefined;}
 			return this;
 		},
-
 		post: function(_URL, _DATA, _OPTIONS){
 			// i may need to put this in a queue, or at least check a queue
 			// update the current call
@@ -148,6 +157,7 @@ function knucklebone(_OPTIONS) {
               if(_CURRENTCALL.readyState === 4){ 
 								_CURRENTOBJECT.pending = false;
 								var _RESPONSE = self.beautifyRes(_CURRENTCALL);
+
 								if((_RESPONSE.status>=200 && _RESPONSE.status<300)?true:false){
 									// if stream, then call:
 									if(KBP.options.stream){
@@ -160,6 +170,11 @@ function knucklebone(_OPTIONS) {
 									{
 										self.resData.push(_RESPONSE);
 										if(self.resData.length === self.queue.length){
+
+											self.resData.each = function(s){
+												for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)
+											};
+
 											(self.resData.length === 1) ? self.success(self.resData[0]) : self.success(self.resData);
 											KBP.utils = undefined;
 										}
@@ -170,6 +185,11 @@ function knucklebone(_OPTIONS) {
 									// else
 										self.resData.push(_RESPONSE);
 										if(self.resData.length === self.queue.length){
+
+											self.resData.each = function(s){
+												for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)
+											};
+										
 											(self.resData.length === 1) ? self.error(self.resData[0]) : self.error(self.resData);
 											KBP.utils = undefined;
 										}
@@ -197,6 +217,8 @@ function knucklebone(_OPTIONS) {
 				r.responseURL = _res.responseURL;
 				r.status = _res.status;
 				r.statusText = _res.statusText;
+				
+
 				return r;
 			},
 			resData:[],

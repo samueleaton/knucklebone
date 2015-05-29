@@ -57,21 +57,25 @@ var fileName = document.getElementById("fileName");
 
 
 
-fileName.addEventListener("keyup", function(e){
+// fileName.addEventListener("keyup", function(e){
 	// e.preventDefault();
 
-	if(fileName.value.length > 0){
+	// if(fileName.value.length > 0){
 
 
 		knucklebone()
 
-			.get(fileName.value)
+			.get(["cats.json", "dogs.json"])
 
 			.success(function(res){
 				output.innerHTML = "";
-				var newImage = new Image();
-				newImage.src=res.responseURL;
-				output.appendChild(newImage);
+				// var newImage = new Image();
+				// newImage.src=res.responseURL;
+				// output.appendChild(newImage);
+				console.log(res)
+				res.each(function(e){
+					output.innerHTML = e.response;
+				});
 				console.log(res);
 			})
 
@@ -82,14 +86,14 @@ fileName.addEventListener("keyup", function(e){
 
 
 
-	} else {
-		output.textContent = "";
-	}
+	// } else {
+	// 	output.textContent = "";
+	// }
 
 
 
 
-});
+// });
 
 
 	
