@@ -20,9 +20,9 @@ function knucklebone(_OPTIONS) {
 			self.utils.info.permissionToFire = false;
 			self.utils.info.aborted = true;
 
-			// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-			// console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-			// }
+			if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
+			console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
+			}
 
 			return self;
 		},
@@ -36,9 +36,9 @@ function knucklebone(_OPTIONS) {
 					// console.log("RESENDING....");
 					this.utils.queue[i]._XMLHttpRequest.abort();
 
-					// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-					// 	console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]);
-					// }
+					if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
+						console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]);
+					}
 
 					this.utils.newRequest(this.utils.queue[i],this.utils.queue, i);
 				} else {
@@ -55,7 +55,10 @@ function knucklebone(_OPTIONS) {
 		*/
 		pause: function(_CALLBACK){
 			this.paused = true;
-			this.utils.pause = _CALLBACK;
+			if(_CALLBACK && typeof _CALLBACK == "function"){
+				this.utils.pause = _CALLBACK;
+			}
+			
 			return this;
 		},
 
@@ -166,9 +169,13 @@ function knucklebone(_OPTIONS) {
 					if( contentType === "form" ){
 						_DATA.addEventListener('submit',function(e){
 							e.preventDefault();
-							// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-							// 	console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA);
-							// }
+
+
+							if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
+								console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA);
+							} // 	***
+
+
 							self.pause(KBP);
 						});
 					} else {
@@ -278,16 +285,18 @@ function knucklebone(_OPTIONS) {
 							if(self.resDataAll.length === self.queue.length){
 								
 
-								// // REMOVED FOR PRODUCTION *****************************
-								// for(var i = 0, ii = _QUEUE.length; i < ii; i++){ // ***
-								// 	//                                                ***
-								// 	if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
-								// 		console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-								// 		console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
-								// 	} //                                              ***
-								// 	 //                                               ***
-								// } //                                                ***
-								//  // ***************************************************
+								// REMOVED FOR PRODUCTION *****************************
+								for(var i = 0, ii = _QUEUE.length; i < ii; i++){
+
+									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
+										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
+										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
+									}
+									
+								} 
+								 // ****************************************************
+
+
 
 
 								// Reset queue now that all requests 
@@ -313,9 +322,9 @@ function knucklebone(_OPTIONS) {
 					// if timeout
 					_CURRENTCALL.addEventListener('timeout', function(){
 
-						// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-						// console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT);
-						// }
+						if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
+						console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT);
+						} // ***
 
 							_CURRENTOBJECT.pending = false;
 							_QUEUE[_INDEX] = null;
@@ -341,16 +350,15 @@ function knucklebone(_OPTIONS) {
 							// ---- IF ALL CALL INTHE QUEUE HAVE RECIEVED A RESPONSE ----
 							if(self.resDataAll.length === self.queue.length){
 								
-								// // REMOVED FOR PRODUCTION *****************************
-								// for(var i = 0, ii = _QUEUE.length; i < ii; i++){ // ***
-								// 	//                                                ***
-								// 	if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
-								// 		console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-								// 		console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
-								// 	} //                                              ***
-								// 	 //                                               ***
-								// } //                                                ***
-								//  // ***************************************************
+
+								// REMOVED FOR PRODUCTION *****************************
+								for(var i = 0, ii = _QUEUE.length; i < ii; i++){
+									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
+										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
+										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
+									} 
+								} // **************************************************
+
 
 								// Reset queue now that all requests 
 								// have a corresponding response
