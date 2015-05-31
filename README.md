@@ -19,7 +19,6 @@ Lightweight, Streamable, and Modular, AJAX library for the client
 <br>  
 <br>  
 <br>  
-<br>  
 
 
 ## Overview of Knucklebone
@@ -55,23 +54,24 @@ The order that they are attached to the `knucklebone()` object doesn't matter, t
 <br>  
 <br>  
 <br>  
-<br>  
 
 
 ##Power Features
 
 Knucklebone's power features include:
-- multi-call packaging
-- single-call and mutli-call streaming
-- pausing (delaying) and playing (resuming) calls, especially with form collaboration
-- extreme modularity of methods
+- **multi-call packaging**
+- **single-call and mutli-call streaming**
+- **pausing (delaying) and playing (resuming) calls, especially with form collaboration**
+- **modularity of methods**
+
+- - -
 
 ####Mutli-call Packages
-Multi-call packaging allows to make multiple requests in one call and get an array of all of the responses when they are all completed. itworks for both get and post requests.
+Multi-call packaging allows to make multiple requests in one call and get an array of all of the responses when they are all completed. It works for both get and post requests.
 #####Simple Example
 ```javascript
 knucklebone()
-.get(["url1.path", "cats.json", "dogs.json", "rabbits.json"])
+.get(["cats.json", "dogs.json", "rabbits.json"])
 .success(function(res){
   console.log(res); // array of responses
 })
@@ -105,7 +105,18 @@ knucklebone()
 })
 ```
 
+####Single- and Multi-call Streaming
+This is very powerful feature of knucklebone. It allows you to open up an I/O pipe that can take in any number of request urls and will deliver each response asynchronously as they are completed.   
 
+All that is needed to start a stream is to specify the stream option when initiating the knucklebone instance `knucklebone({stream:true})`.  (*each response is returned individually, therfore the `each()` method is not needed/available*)
+```javascript
+knucklebone({stream:true})
+  .get(["cats.json", "dogs.json", "rabbits.json"])
+  
+  .success(function(res){
+  	console.log(res);
+  })
+```
 
 <br>
 
