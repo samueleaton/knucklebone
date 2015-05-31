@@ -57,14 +57,14 @@ The order that they are attached to the `knucklebone()` object doesn't matter, t
 ##Power Features
 
 Knucklebone's power features include:
-- **Multi-call Packaging**
-- **Single-call and Mutli-call Streaming**
+- **Multi-call Requests**
+- **Single-call and Mutli-call Request Streaming**
 - **Pausing (delaying) and Playing (resuming) Calls (especially with form collaboration)**
 - **Modularity of Methods**
 
 - - -
 
-###Mutli-call Packages
+###Power Feature: Mutli-call Requests
 Multi-call packaging allows you to make multiple requests in one call and get an array of all of the responses when they are all completed. It works for both get and post requests.
 #####Simple Example
 ```javascript
@@ -105,7 +105,7 @@ knucklebone()
 
 - - -
 
-###Single- and Multi-call Streaming
+###Power Feature: Single- and Multi-call Request Streaming
 This is very powerful feature of knucklebone. It allows you to open up an I/O pipe that can take in any number of request urls and will deliver each response asynchronously as they are completed.   
 
 All that is needed to start a stream is to specify the stream option when initiating the knucklebone instance `knucklebone({stream:true})`.  (*each response is returned individually, therfore the `each()` method is not needed/available*)  
@@ -157,7 +157,7 @@ You can have the response methods react with an immidiate, new AJAX call. Throw 
 
 - - -
 
-###Delay and Resume Calls
+###Power Feature: Delay and Resume Calls
 By calling the `pause()` method before you call the `get()` or `post()` methods, you can get your call all set up and ready to fire. This allows you to prepare a request and then wait for the right circumstance to finally launch the call. Use the `play()` method to resume the call.
 
 You can pass a function to the `pause` method, which will be run before the request methods, allowing for a convenient spot for logic.  
@@ -201,6 +201,17 @@ knucklebone()
 ```
 
 <br>
+
+- - -  
+
+###Power Feature: Modularity of Methods
+
+*Documentation Soon*
+<br>
+<br>
+
+- - -  
+
 <br>
 <br>  
 ##Setting Knucklebone Options
@@ -238,11 +249,12 @@ knucklebone({
 	.post("path/to/file", formData)
 ...
 ```
-  
-  
-- - -
+<br>
 
-###Properties of the response object, refered to in our examples as `res` :
+- - -  
+
+<br>
+####Properties of the response object, refered to in our examples as `res` :
 - **json**  (if getting json data, this holds the parsed object, otherwise it is `null`)
 - **query** (the original query that was used for the request; it is good for consitent logic checks)
 - **responseType**  (can be "json", "document", "text", etc.)
@@ -251,17 +263,19 @@ knucklebone({
 - **responseURL**  (the origin of the response)
 - **status**  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
 - **statusText**  (the text equivalent to the status code)
-- each (a method that will perform the same function to all responses in an array; must pass an array of requests and not use the `stream` option to access this response method)
-
+- each (a method that will perform the same function to all responses in an array; must pass an array of requests and not use the `stream` option to access this response method) 
+  
+<br>
 
 - - -
-
+<br> 
 ####Feature Roadmap
 - Detect if Request has been sent, but Response not yet returned (a.k.a. Response Pending). *almost complete*
 - ~~Be able to *abort* and *resend* an Ajax call~~ **added**
 - Be able to send `put` and `delete` as per the REST api style
 - Finish this new 1.0 README
 
+<br> 
 - - -
 
 ####Why the name "knucklebone"?
