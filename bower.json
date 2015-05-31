@@ -1,13 +1,17 @@
 {
 	"name": "knucklebone",
-	"description": "Lightweight, AJAX library for the client",
+	"description": "Lightweight, Streamable, and Modular, AJAX library for the client",
 	"main": "knucklebone.js",
 	"keywords": [
-		"library",
-		"lightweight",
     "AJAX",
-    "ajax",
-    "json"
+    "JavaScript",
+    "Micro",
+    "library",
+    "HTTP",
+    "request",
+    "response",
+    "JSON",
+    "lightweight"
   ],
   "license": "MIT",
   "homepage": "https://github.com/eaton11/knucklebone.js",

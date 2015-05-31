@@ -1,0 +1,36 @@
+{
+  "name": "knucklebone",
+  "version": "1.0.0",
+  "description": "Lightweight, Streamable, and Modular, AJAX library for the client",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eaton11/knucklebone.js.git"
+  },
+  "keywords": [
+    "AJAX",
+    "JavaScript",
+    "Micro",
+    "library",
+    "HTTP",
+    "request",
+    "response",
+    "JSON",
+    "lightweight"
+  ],
+  "author": "Sam Eaton",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eaton11/knucklebone.js/issues"
+  },
+  "homepage": "https://github.com/eaton11/knucklebone.js#readme",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-rename": "^1.2.2",
+    "gulp-strip-debug": "^1.0.2",
+    "gulp-uglify": "^1.2.0"
+  }
+}
