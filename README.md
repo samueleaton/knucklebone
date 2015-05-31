@@ -1,8 +1,10 @@
 <br>
+<br>
 <p align="center">
 <img src="logo.png"> 	
 </p>
 <br>
+<br>  
 
 # knucklebone.js
 
@@ -10,10 +12,7 @@
 
 Lightweight, Streamable, and Modular, AJAX library for the client
 
-- - -
 
-##### NOTE: BIG 1.0 were just implemented (May 30, 2015) and this README is currently being updated.  
-- - -
 
 <br>
 
@@ -29,7 +28,7 @@ knucklebone()
 - `post()`
 
 ```javascript
-knucklebone.get('path/to/file')
+knucklebone().get('path/to/file')
 ```
 
 ####There are 3 methods that can handle the response(s):
@@ -44,17 +43,19 @@ knucklebone().get("path/to/file")
 .error( function(res){} )
 .response( function(res){} )
 ```
-To encourage consistency, they will always be called in this order: (1)`success`, (2)`error`, (3)`response`  
+To encourage consistency, they will always be called in this order: (1)`success`, (2)`error`, (3)`response`.  
 The order that they are attached to the `knucklebone()` object doesn't matter, they will still be called in that order after the response(s) is/are returned.  
 
+<br>
 <br>
 
 ##Power Features
 
 Knucklebone's power features include:
-- mutli-call streaming
 - multi-call packaging
-- pausing (delaying) and playing (resuming) calls
+- single-call and mutli-call streaming
+- pausing (delaying) and playing (resuming) calls, especially with form collaboration
+
 
 
 You can pause/delay a request using the `pause` method before you use the `get` or `post` methods:
@@ -65,6 +66,13 @@ knucklebone.pause().get('path/to/file')
 This will pause the request indefinitely. There are at least 2 ways to resume the call.
 
 <br>  
+
+
+- - -   
+##### NOTE: BIG 1.0 were just implemented (May 30, 2015) and this README is currently being updated.  
+##### Information below is being updated to current 1.0 version  
+- - -
+
 
 ## How to use knucklebones
 
