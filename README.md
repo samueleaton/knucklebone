@@ -16,9 +16,7 @@ Lightweight, Streamable, and Modular, AJAX library for the client
 [![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
 
-<br>  
-<br>  
-<br>  
+<br>
 
 
 ## Overview of Knucklebone
@@ -52,17 +50,14 @@ To encourage consistency, they will always be called in this order: (1)`success`
 The order that they are attached to the `knucklebone()` object doesn't matter, they will still be called in that order after the response(s) is/are returned.  
 
 <br>  
-<br>  
-<br>  
-
 
 ##Power Features
 
 Knucklebone's power features include:
-- **multi-call packaging**
-- **single-call and mutli-call streaming**
-- **pausing (delaying) and playing (resuming) calls, especially with form collaboration**
-- **modularity of methods**
+- **Multi-call Packaging**
+- **Single-call and Mutli-call Streaming**
+- **Pausing (delaying) and Playing (resuming) Calls (especially with form collaboration)**
+- **Modularity of Methods**
 
 - - -
 
