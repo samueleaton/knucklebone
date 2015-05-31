@@ -101,7 +101,7 @@ knucklebone()
 .success(function(res){
 
 	res.each(function(res){
-		if(res.query == "cats.json"){
+		if(res.query === "cats.json"){
 			console.log(res); // the cats.json response
 		}
 	})
@@ -156,7 +156,7 @@ var kbGetDocs = knucklebone({stream:true})
 	.success(function(res){
 		console.log("successfully got: ", res.response);
 	})
-	error(function(res){
+	.error(function(res){
 		kbPostErrors.post("location/to/errorLog", res); // log to other knucklebone 
 	});
 ```  
