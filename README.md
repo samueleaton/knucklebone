@@ -92,7 +92,7 @@ knucklebone()
 
 
 ####Targeting One of the Responses Individually
-How do you loop through the responses and only react to a single specific response? Easy. Thats where the response sweetening that knucklebone adds really shines (see the *Properties of the response object* section for list). 
+How do you loop through the responses and only react to a single specific response? Easy. Thats where the response sweetening that knucklebone adds really shines (see the [*Properties of the response object*](#properties-of-the-response-object) section for list). 
 
 One of the properties that knucklebone adds to the responses is a string that contains the original query, called `query`. Here is how you target only the `cats.json` file:
 ```javascript
