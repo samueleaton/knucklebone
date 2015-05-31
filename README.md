@@ -67,7 +67,7 @@ Knucklebone's power features include:
 - - -
 
 ####Mutli-call Packages
-Multi-call packaging allows to make multiple requests in one call and get an array of all of the responses when they are all completed. It works for both get and post requests.
+Multi-call packaging allows you to make multiple requests in one call and get an array of all of the responses when they are all completed. It works for both get and post requests.
 #####Simple Example
 ```javascript
 knucklebone()
