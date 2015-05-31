@@ -1,10 +1,14 @@
-<br>
-<br>
+<br>  
+<br>  
+<br>  
 <p align="center">
 <img src="logo.png"> 	
 </p>
-<br>
 <br>  
+<br>  
+<br>  
+<br>  
+
 
 # knucklebone.js
 
