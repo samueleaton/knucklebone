@@ -263,7 +263,7 @@ knucklebone({
 - **responseURL**  (the origin of the response)
 - **status**  (the http [status code](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes))
 - **statusText**  (the text equivalent to the status code)
-- each (a method that will perform the same function to all responses in an array; must pass an array of requests and not use the `stream` option to access this response method) 
+- **each** (a method that will perform the same function to all responses in an array; must pass an array of requests and not use the `stream` option to access this response method) 
   
 <br>
 
