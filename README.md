@@ -108,7 +108,8 @@ knucklebone()
 ####Single- and Multi-call Streaming
 This is very powerful feature of knucklebone. It allows you to open up an I/O pipe that can take in any number of request urls and will deliver each response asynchronously as they are completed.   
 
-All that is needed to start a stream is to specify the stream option when initiating the knucklebone instance `knucklebone({stream:true})`.  (*each response is returned individually, therfore the `each()` method is not needed/available*)
+All that is needed to start a stream is to specify the stream option when initiating the knucklebone instance `knucklebone({stream:true})`.  (*each response is returned individually, therfore the `each()` method is not needed/available*)  
+#####Simple Example
 ```javascript
 knucklebone({stream:true})
   .get(["cats.json", "dogs.json", "rabbits.json"])
@@ -117,6 +118,24 @@ knucklebone({stream:true})
   	console.log(res);
   })
 ```
+
+#####Event Reaction
+This AJAX pipe allows for an available pipe that you can pass a file path to whenever. This example shows how you could easily fire an AJAX call whenever a certain event occurs (it also shows off the modularity of knucklebone methods):
+```javascript
+var myKb = knucklebone({stream:true})
+  .success(function(res){
+  	console.log(res);
+  });
+  
+function myEventHandler(newURL) {
+  myKb.get(newURL); 
+}
+```
+In the example, each time the `myEventHandler` function fires, knucklebone is ready to send another *get* request for whatever the `newURL` happens to be. When the response is returned, it will be handled by the `success` promise (if it was a successful response, of course). 
+
+
+#####Continuous Call-Response Cycle
+
 
 <br>
 
