@@ -33,11 +33,14 @@ knucklebone()
 ```javascript
 knucklebone().get('path/to/file')
 ```
+```javascript
+knucklebone().post('path/to/file', dataToSend)
+```
 
 ####There are 3 methods that can handle the response(s):
 - `success` - receives any *succesful* responses
-- `error` - receives any *errored* responses
-- `response` - receives *any/all* responses
+- `error` - receives any *errored* responses and timeout responses
+- `response` - receives *any/all* responses (general purpose)
 
 These methods are all implemented using a promise style. They are not called unless prerequisites are met. They are all optional.
 ```javascript
@@ -68,7 +71,7 @@ Multi-call packaging allows you to make multiple requests in one call and get an
 knucklebone()
 .get(["cats.json", "dogs.json", "rabbits.json"])
 .success(function(res){
-  console.log(res); // array of responses
+	console.log(res); // array of responses
 })
 ```
 #####The `each` Method
@@ -78,9 +81,9 @@ knucklebone()
 .get(["cats.json", "dogs.json", "rabbits.json"])
 .success(function(res){
 
-  res.each(function(res){
-    console.log(res); // a single response
-  })
+	res.each(function(res){
+		console.log(res); // a single response
+	})
   
 })
 ```
@@ -91,11 +94,11 @@ knucklebone()
 .get(["cats.json", "dogs.json", "rabbits.json"])
 .success(function(res){
 
-  res.each(function(res){
-    if(res.query == "cats.json"){
-    	console.log(res); // the cats.json response
-    }
-  })
+	res.each(function(res){
+		if(res.query == "cats.json"){
+			console.log(res); // the cats.json response
+		}
+	})
   
 })
 ```
@@ -109,30 +112,95 @@ All that is needed to start a stream is to specify the stream option when initia
 #####Simple Example
 ```javascript
 knucklebone({stream:true})
-  .get(["cats.json", "dogs.json", "rabbits.json"])
+	.get(["cats.json", "dogs.json", "rabbits.json"])
   
-  .success(function(res){
-  	console.log(res);
-  })
+	.success(function(res){
+		console.log(res);
+	})
 ```
 
 #####Event Reaction
 This AJAX pipe allows for an available pipe that you can pass a file path to whenever. This example shows how you could easily fire an AJAX call whenever a certain event occurs (it also shows off the modularity of knucklebone methods):
 ```javascript
 var myKb = knucklebone({stream:true})
-  .success(function(res){
-  	console.log(res);
-  });
+	.success(function(res){
+		console.log(res);
+	});
   
 function myEventHandler(newURL) {
-  myKb.get(newURL); 
+	myKb.get(newURL); 
 }
 ```
 In the example, each time the `myEventHandler` function fires, knucklebone is ready to send another *get* request for whatever the `newURL` happens to be. When the response is returned, it will be handled by the `success` promise (if it was a successful response, of course). 
 
 
 #####Continuous Call-Response Cycle
-#####*Currently Being Revised*
+With Request Streaming, knucklebone is ready to stream another request on command. This proves very useful in the `success`, `error`, and/or `response` methods.
+In this next example, we will create 2 knucklebone instances, one for getting info, and one for posting errors to a document.
+```javascript
+var kbPostErrors = knucklebone({stream:true})
+	.success(function(res){
+		console.log("successful write to error log");
+	});
+
+
+var kbGetDocs = knucklebone({stream:true})
+	.get(["path/file1.json","path/file2.json","etc.json"])
+	.success(function(res){
+		console.log("successfully got: ", res.response);
+	})
+	error(function(res){
+		kbPostErrors.post("location/to/errorLog", res); // log to other knucklebone 
+	});
+```
+You can have the response methods react with an immidiate, new AJAX call. Throw somelogic in there and you'll have a very robust system with very little code.
+
+
+#####Delay and Resume Calls
+By calling the `pause()` method before you call the `get()` or `post()` methods, you can get your call all set up and ready to fire. This allows you to prepare a request and then wait for the right circumstance to finally launch the call. Use the `play()` method to resume the call.
+
+You can pass a function to the `pause` method, which will be run before the request methods, allowing for a convenient spot for logic.
+**Simple Example**
+```javascript
+var getFile = knucklebone()
+.pause()
+.get("myFile.json")
+
+function playKnucklebone(){
+	getFile.play()
+}
+```
+In this example, the `getFile` AJAX call will be paused indefinitely until we call the `playKnucklebone` function. 
+
+######Prevent ajax call if form is not proper  
+If you are doing a post request with a form, `pause` will only fire when the form is submitted, and will automatically stop the form from being submitted for you so that you can do some logic. Now that's service! 
+
+Again, you just need to call the `play` method to go on with the request. 
+
+Make sure you pass the form to the `post` method as the second paramter. Knucklebone will automatically parse the form and all of its fields for you and submit it as a post request.
+
+The `pause` method passes you a reference to the current AJAX call so that you can easy manipulate it. In the exmaple we named it `kb`
+```html
+<form id="superForm">
+	<input id="fName" name="fName">
+	<input id="age" name="age">
+	<input type="submit">
+</form>
+```
+```javascript
+var superform = document.getElementById("superForm");
+var fName = document.getElementById("fName");
+...
+knucklebone()
+.pause(function(kb){
+	// only submit form if fName field is not empty
+	if(fName.value.length > 0) kb.play();
+})
+.post("path/to/send/form", superForm);
+```
+
+
+
 - - -
 <br>
 
