@@ -16,8 +16,8 @@ Lightweight, Streamable, and Modular, AJAX library for the client
 [![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
 
-
-
+<br>  
+<br>  
 <br>  
 <br>  
 
@@ -52,8 +52,11 @@ knucklebone().get("path/to/file")
 To encourage consistency, they will always be called in this order: (1)`success`, (2)`error`, (3)`response`.  
 The order that they are attached to the `knucklebone()` object doesn't matter, they will still be called in that order after the response(s) is/are returned.  
 
-<br>
-<br>
+<br>  
+<br>  
+<br>  
+<br>  
+
 
 ##Power Features
 
@@ -61,8 +64,50 @@ Knucklebone's power features include:
 - multi-call packaging
 - single-call and mutli-call streaming
 - pausing (delaying) and playing (resuming) calls, especially with form collaboration
+- extreme modularity of methods
+
+####Mutli-call Packages
+Multi-call packaging allows to make multiple requests in one call and get an array of all of the responses when they are all completed. itworks for both get and post requests.
+#####Simple Example
+```javascript
+knucklebone()
+.get(["url1.path", "cats.json", "dogs.json", "rabbits.json"])
+.success(function(res){
+  console.log(res); // array of responses
+})
+```
+#####The `each` Method
+The `each()` method allows for easy manipulation of the response data. It takes a function that will be applied to each response. (*only arrays of multiple responses have the `each` method*)
+```javascript
+knucklebone()
+.get(["cats.json", "dogs.json", "rabbits.json"])
+.success(function(res){
+
+  res.each(function(res){
+    console.log(res); // a single response
+  })
+  
+})
+```
+#####Targeting One of the Responses Specifically
+How do you loop through the responses and only react to a single specific response? Easy. Thats where the reponses sweetening that knucklebone adds really shines. One of the properties that knucklebone adds to the responses is a string that contains the original query, called `query`. Here is how you traget only the `cats.json` file:
+```javascript
+knucklebone()
+.get(["cats.json", "dogs.json", "rabbits.json"])
+.success(function(res){
+
+  res.each(function(res){
+    if(res.query == "cats.json"){
+    	console.log(res); // the cats.json response
+    }
+  })
+  
+})
+```
 
 
+
+<br>
 
 You can pause/delay a request using the `pause` method before you use the `get` or `post` methods:
 ```javascript
