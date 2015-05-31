@@ -21,12 +21,12 @@ Lightweight, Streamable, and Modular, AJAX library for the client
 
 ## Overview of Knucklebone
 
-###Initiate an AJAX call or series:
+####Initiate an AJAX call or series:
 ```javascript
 knucklebone()
 ```
 
-###To specify the request type, there are 2 methods
+####To specify the request type, there are 2 methods
 - `get()`
 - `post()`
 
@@ -37,10 +37,10 @@ knucklebone().get('path/to/file')
 knucklebone().post('path/to/file', dataToSend)
 ```
 
-###There are 3 methods that can handle the response(s):
+####There are 3 methods that can handle the response(s):
 - `success` - receives any *succesful* responses
 - `error` - receives any *errored* responses and timeout responses
-- `response` - receives *any/all* responses (general purpose)
+- `response` - receives *any/all* responses (general purpose)  
 
 These methods are all implemented using a promise style. They are not called unless prerequisites are met. They are all optional.
 ```javascript
@@ -48,7 +48,8 @@ knucklebone().get("path/to/file")
 .success( function(res){} )
 .error( function(res){} )
 .response( function(res){} )
-```
+```  
+  
 To encourage consistency, they will always be called in this order: (1)`success`, (2)`error`, (3)`response`.  
 The order that they are attached to the `knucklebone()` object doesn't matter, they will still be called in that order after the response(s) is/are returned.  
 
@@ -75,7 +76,7 @@ knucklebone()
 })
 ```
 ####The `each` Method
-The `each()` method allows for easy manipulation of the response data. It takes a function that will be applied to each response. (*only arrays of multiple responses have the `each` method*)
+The `each()` method allows for easy manipulation of the response data. It takes a function that will be applied to each response. 
 ```javascript
 knucklebone()
 .get(["cats.json", "dogs.json", "rabbits.json"])
@@ -86,9 +87,14 @@ knucklebone()
 	})
   
 })
-```
+```  
+*Only an array of multiple responses has the `each` method.*  It is not available for streams.
+
+
 ####Targeting One of the Responses Individually
-How do you loop through the responses and only react to a single specific response? Easy. Thats where the responses sweetening that knucklebone adds really shines. One of the properties that knucklebone adds to the responses is a string that contains the original query, called `query`. Here is how you target only the `cats.json` file:
+How do you loop through the responses and only react to a single specific response? Easy. Thats where the response sweetening that knucklebone adds really shines (see the *Properties of the response object* section for list). 
+
+One of the properties that knucklebone adds to the responses is a string that contains the original query, called `query`. Here is how you target only the `cats.json` file:
 ```javascript
 knucklebone()
 .get(["cats.json", "dogs.json", "rabbits.json"])
@@ -130,7 +136,8 @@ var myKb = knucklebone({stream:true})
 function myEventHandler(newURL) {
 	myKb.get(newURL); 
 }
-```
+```  
+
 In the example, each time the `myEventHandler` function fires, knucklebone is ready to send another *get* request for whatever the `newURL` happens to be. When the response is returned, it will be handled by the `success` promise (if it was a successful response, of course). 
 
 
@@ -152,7 +159,8 @@ var kbGetDocs = knucklebone({stream:true})
 	error(function(res){
 		kbPostErrors.post("location/to/errorLog", res); // log to other knucklebone 
 	});
-```
+```  
+
 You can have the response methods react with an immediate, new AJAX call. Throw some logic in there and you'll have a very robust system with very little code.
 
 - - -
@@ -170,7 +178,8 @@ var getFile = knucklebone()
 function playKnucklebone(){
 	getFile.play()
 }
-```
+```  
+
 In this example, the `getFile` AJAX call will be paused indefinitely until we call the `playKnucklebone` function. 
 
 ####Prevent ajax call if form is not proper  
@@ -180,14 +189,16 @@ Again, you just need to call the `play` method to go on with the request.
 
 Make sure you pass the form to the `post` method as the second parameter. Knucklebone will automatically parse the form and all of its fields for you and submit it as a post request.
 
-The `pause` method passes you a reference to the current AJAX call so that you can easy manipulate it. In the example we named it `kb`
+The `pause` method passes you a reference to the current AJAX call so that you can easy manipulate it. In the example we named it `kb`  
+html
 ```html
 <form id="superForm">
 	<input id="fName" name="fName">
 	<input id="age" name="age">
 	<input type="submit">
 </form>
-```
+```  
+javascript  
 ```javascript
 var superForm = document.getElementById("superForm");
 var fName = document.getElementById("fName");
@@ -250,11 +261,11 @@ knucklebone({
 ...
 ```
 <br>
-
-- - -  
-
 <br>
-####Properties of the response object, referred to in our examples as `res` :
+- - -  
+<br>
+<br>
+###Properties of the response object:
 - **json**  (if getting json data, this holds the parsed object, otherwise it is `null`)
 - **query** (the original query that was used for the request; it is good for consistent logic checks)
 - **responseType**  (can be "json", "document", "text", etc.)
@@ -265,6 +276,7 @@ knucklebone({
 - **statusText**  (the text equivalent to the status code)
 - **each** (a method that will perform the same function to all responses in an array; must pass an array of requests and not use the `stream` option to access this response method) 
   
+<br> 
 <br>
 
 - - -
@@ -285,4 +297,4 @@ knucklebone({
 
 - - -   
 <br>
-##### NOTE) *BIG* 1.0 were just implemented (May 30, 2015) and this README has been recently updated and will recieve more updates soon.  
+##### NOTE) *BIG* 1.0 were just implemented (May 30, 2015) and this README has been recently updated and will receive more updates soon.  
