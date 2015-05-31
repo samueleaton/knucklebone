@@ -89,7 +89,7 @@ knucklebone()
   
 })
 ```
-#####Targeting One of the Responses Specifically
+#####Targeting One of the Responses Individually
 How do you loop through the responses and only react to a single specific response? Easy. Thats where the reponses sweetening that knucklebone adds really shines. One of the properties that knucklebone adds to the responses is a string that contains the original query, called `query`. Here is how you traget only the `cats.json` file:
 ```javascript
 knucklebone()
@@ -104,6 +104,8 @@ knucklebone()
   
 })
 ```
+
+- - -
 
 ####Single- and Multi-call Streaming
 This is very powerful feature of knucklebone. It allows you to open up an I/O pipe that can take in any number of request urls and will deliver each response asynchronously as they are completed.   
