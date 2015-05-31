@@ -62,7 +62,7 @@ Knucklebone's power features include:
 - **Pausing (delaying) and Playing (resuming) Calls (especially with form collaboration)**
 - **Modularity of Methods**
 
-- - -
+
 
 ###Power Feature: Mutli-call Requests
 Multi-call packaging allows you to make multiple requests in one call and get an array of all of the responses when they are all completed. It works for both get and post requests.
@@ -289,4 +289,4 @@ knucklebone({
 
 
 - - -   
-##### NOTE: BIG 1.0 were just implemented (May 30, 2015) and this README has been recently updated.  
+##### NOTE) *BIG* 1.0 were just implemented (May 30, 2015) and this README has been recently updated and will recieve more updates soon.  
