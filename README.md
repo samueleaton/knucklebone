@@ -137,8 +137,8 @@ In the example, each time the `myEventHandler` function fires, knucklebone is re
 
 
 #####Continuous Call-Response Cycle
-
-
+#####*Currently Being Revised*
+- - -
 <br>
 
 You can pause/delay a request using the `pause` method before you use the `get` or `post` methods:
@@ -153,7 +153,7 @@ This will pause the request indefinitely. There are at least 2 ways to resume th
 
 - - -   
 ##### NOTE: BIG 1.0 were just implemented (May 30, 2015) and this README is currently being updated.  
-##### Information below is being updated to current 1.0 version  
+##### All documentation below is pre-1.0 update 
 - - -
 
 
