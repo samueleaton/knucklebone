@@ -253,7 +253,7 @@ false          | detailed logs in the console with non-minified knucklebone.js  
 ```javascript
 knucklebone({
 	stream: true, 
-	requestHeader:{"Content-type", "application/x-www-form-urlencoded"},
+	requestHeader:{"Content-type": "application/x-www-form-urlencoded"},
 	timeout: 2500,  // 2.5 seconds
 	verbose: true
 	})
