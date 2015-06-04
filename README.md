@@ -55,6 +55,49 @@ The order that they are attached to the `knucklebone()` object doesn't matter, t
 
 <br>  
 
+####Making a post request
+If you want to submit an html for through a post request, knucklebone does a lot of heavy lift for you. To connect a form to knucklebone, you need to give the form a `kb-form` attribute and give it whatever name you desire. Then, pass that name as the second parameter of the post request.
+```html
+<!--HTML-->
+<form kb-form="superform">
+	
+</form>
+```
+```javascript
+// JavaScript
+knucklebone()
+.post("path/goes/here", "superform");
+```
+
+Any inputs or form fields inside of the form need a `kb-name` attribute, along with the desired name. You can treat this field as if it was the `name` attribute(which means you don't need a `name` attribute).
+```html
+<!--HTML-->
+<form kb-form="superform">
+	<input kb-name="fName">
+	<input kb-name="lName">
+	<input kb-name="age">
+</form>
+```
+
+There are two options for submitting the form:
+1. Add a `pause` method before the `post`
+2. Do the knucklebone call in a form submit handler
+
+The first way less work for you.
+
+*Add a pause method*  
+```javascript
+// JavaScript
+knucklebone()
+.pause(function(kb){
+	// if form is ready to submit, then run the play method
+	kb.play();
+})
+.post("path/goes/here", "superform");
+```
+
+<br>
+
 ##Power Features
 
 Knucklebone's power features include:

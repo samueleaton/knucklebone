@@ -11,18 +11,18 @@ function knucklebone(_OPTIONS) {
 
 		// aborts pending request(s)
 		abort: function(){
-			
+
 			self = this;
 			for(var i = 0, ii = self.utils.queue.length; i<ii; i++){
 				self.utils.queue[i]._XMLHttpRequest.abort();
 			}
-			
+
 			self.utils.info.permissionToFire = false;
 			self.utils.info.aborted = true;
 
-			if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-			console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-			}
+			if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+			console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
+			} // *remove for production*
 
 			return self;
 		},
@@ -36,9 +36,9 @@ function knucklebone(_OPTIONS) {
 					// console.log("RESENDING....");
 					this.utils.queue[i]._XMLHttpRequest.abort();
 
-					if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-						console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]);
-					}
+					if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+						console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]); // *remove for production*
+					} // *remove for production*
 
 					this.utils.newRequest(this.utils.queue[i],this.utils.queue, i);
 				} else {
@@ -50,20 +50,20 @@ function knucklebone(_OPTIONS) {
 		},
 
 
-		/* if called before get() or post(), it will 
-		prevent them from running until play() is called 
+		/* if called before get() or post(), it will
+		prevent them from running until play() is called
 		*/
 		pause: function(_CALLBACK){
 			this.paused = true;
 			if(_CALLBACK && typeof _CALLBACK == "function"){
 				this.utils.pause = _CALLBACK;
 			}
-			
+
 			return this;
 		},
 
 
-		/* if a get() or post() request has been 
+		/* if a get() or post() request has been
 		paused, this will resume the request
 		*/
 		play: function(){
@@ -85,7 +85,7 @@ function knucklebone(_OPTIONS) {
 			return this;
 		},
 
-		/* this will return all successful responses, which 
+		/* this will return all successful responses, which
 		is defined by having a status code of ( 200 <= x < 300 )
 		*/
 		success: function(_CALLBACK){
@@ -94,7 +94,7 @@ function knucklebone(_OPTIONS) {
 		},
 
 
-		/* this will return all error responses, which is 
+		/* this will return all error responses, which is
 		defined by having a status code of ( x < 200, 300 <= x )
 		and request timeouts
 		*/
@@ -115,12 +115,22 @@ function knucklebone(_OPTIONS) {
 		/* submit a post request, with data to submit
 		*/
 		post: function(_URL, _DATA){
-			this.utils.prepareCall(_URL, "post", _DATA, this);
-			return this;
+			if(_OPTIONS && _OPTIONS["form"] === false){
+				// Something
+			} else {
+				var _DATA = document.querySelector("[kb-form="+_DATA+"]");
+			}
+			
+			// check if {form:false}
+
+			// console.log("form: ",form);
+
+			this.utils.prepareCall(_URL, "post", _DATA, this); // don't use form if not a form
+			// return this;
 		},
 
 
-		/* put and delete requests will be added to library 
+		/* put and delete requests will be added to library
 		in the future to comply with REST architecture style
 		*/
 		/*
@@ -132,25 +142,32 @@ function knucklebone(_OPTIONS) {
 		*/
 
 
-		/*contains properties that make up the data structures 
-		and methods that manipulate those structures along with 
+		/*contains properties that make up the data structures
+		and methods that manipulate those structures along with
 		logic for organizing XMLHttpRequest states. This contains
 		all the main functionality of knucklebone
 		*/
 		utils: {
 
 
-			/* Takes main information from the get() or 
-			post() methods and prepares that information 
-			for the mapCall() method; 
+			/* Takes main information from the get() or
+			post() methods and prepares that information
+			for the mapCall() method;
 			determines if a single or multiple request;
 			will pause request if pause() method was called;
 			*/
 			prepareCall: function(_URL, _TYPE, _DATA, _KBP){
+				console.log("checkURL: ",_URL);
 				var self = this;
 				if(typeof _URL === "string"){
 					KBP.options.multi = false;
-					self.mapCall(_URL, _TYPE);
+					if(_DATA){
+						console.log("check2");
+						self.mapCall(_URL, _TYPE, _DATA);
+					} else {
+						console.log("check3");
+						self.mapCall(_URL, _TYPE);
+					}
 				} else if(Array.isArray(_URL)) {
 					KBP.options.multi = true;
 					for(var i = 0, ii=_URL.length; i<ii; i++){
@@ -171,9 +188,9 @@ function knucklebone(_OPTIONS) {
 							e.preventDefault();
 
 
-							if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-								console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA);
-							} // 	***
+							if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+								console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA); // *remove for production*
+							} // 	*** // *remove for production*
 
 
 							self.pause(KBP);
@@ -182,7 +199,7 @@ function knucklebone(_OPTIONS) {
 
 						self.pause(KBP);
 					}
-					
+
 				} else {
 					self.rqst();
 				}
@@ -191,11 +208,12 @@ function knucklebone(_OPTIONS) {
 			},
 
 
-			/* creates a map (or packet) of information 
-			relating to the request and stroes that in a 
+			/* creates a map (or packet) of information
+			relating to the request and stroes that in a
 			queue of pending requests
 			*/
 			mapCall: function(_URL, _TYPE, _POST_DATA){
+				console.log("check1: ",_URL);
 				var self = this; // utils
 				var newCall = {
 					url: _URL,
@@ -211,40 +229,42 @@ function knucklebone(_OPTIONS) {
 				};
 
 				if(newCall.type === "post"){
+					console.log("tis a post");
 					newCall.postData = _POST_DATA;
-					newCall.form = (_OPTIONS!==undefined)?_OPTIONS["form"]:true;
+					newCall.form = (_OPTIONS==undefined)? true : ((_OPTIONS["form"])?_OPTIONS["form"]:true );
 				}
+				console.log("boom!");
 				self.queue.push(newCall);
 			},
 
 
-			/* loops through the queue of pending requests 
+			/* loops through the queue of pending requests
 			and calls the newRequest() for each one
 			*/
 			rqst: function() {
 				for (var i = 0, ii = this.queue.length; i<ii; i++) {
 					if(this.queue[i] !== null){
 						this.newRequest(this.queue[i], this.queue, i);
-					} 
+					}
 				}
 			},
 
 
 			/* VIM (Very Important Method)
-			creates a new XMLHttpRequest and attaches 
-			it as a property of the queued request 
+			creates a new XMLHttpRequest and attaches
+			it as a property of the queued request
 			*/
 			newRequest: function(_QUEUE_ITEM, _QUEUE, _INDEX){
 				var self = this;
 				_QUEUE_ITEM._XMLHttpRequest = new XMLHttpRequest();
-				
-				
+
+
 				// self calling anonymous function for adding the event listener
 				(function (_CURRENTOBJECT, _CURRENTCALL, _QUEUE, _INDEX) {
 
 
           _CURRENTCALL.addEventListener('readystatechange', function(){
-            if(_CURRENTCALL.readyState === 4 && _CURRENTCALL.status !== 0) { 
+            if(_CURRENTCALL.readyState === 4 && _CURRENTCALL.status !== 0) {
 
 							_CURRENTOBJECT.pending = false;
 							_QUEUE[_INDEX] = null;
@@ -254,7 +274,7 @@ function knucklebone(_OPTIONS) {
 
 							// if successful response
 							if((_RESPONSE.status>=200 && _RESPONSE.status<300)?true:false){
-								
+
 								// if stream or single call, then:
 								if(KBP.options.stream  || !KBP.options.multi){
 									self.success(_RESPONSE, KBP);
@@ -264,16 +284,16 @@ function knucklebone(_OPTIONS) {
 									self.resDataSuccess.push(_RESPONSE);
 									self.resDataAll.push(_RESPONSE);
 								}
-							} 
+							}
 
 							// if error response
-							else { 
+							else {
 
 								// if stream or single call, then:
 								if(KBP.options.stream  || !KBP.options.multi){
 									self.error(_RESPONSE, KBP);
 									self.response(_RESPONSE, KBP);
-								} 
+								}
 								else {
 									self.resDataError.push(_RESPONSE);
 									self.resDataAll.push(_RESPONSE);
@@ -281,30 +301,29 @@ function knucklebone(_OPTIONS) {
 							}
 
 							// ---- WHEN ALL REQUESTS IN QUEUE HAVE RECIEVED A RESPONSE ----
-							// only applies if makes multiple requests 
+							// only applies if makes multiple requests
 							if(self.resDataAll.length === self.queue.length){
+
+
+								
+								for(var i = 0, ii = _QUEUE.length; i < ii; i++){ // *remove for production*
+
+									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION *** // *remove for production*
+										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
+										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
+									} // *remove for production*
+
+								} // *remove for production*
 								
 
-								// REMOVED FOR PRODUCTION *****************************
-								for(var i = 0, ii = _QUEUE.length; i < ii; i++){
-
-									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
-										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
-									}
-									
-								} 
-								 // ****************************************************
 
 
-
-
-								// Reset queue now that all requests 
+								// Reset queue now that all requests
 								// have a corresponding response
 								_QUEUE = [];
 
 
-								// add the each() method to 
+								// add the each() method to
  								self.resDataSuccess.each = self.resDataAll.each = self.resDataError.each = function(s){
 										for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)
 								};
@@ -322,9 +341,9 @@ function knucklebone(_OPTIONS) {
 					// if timeout
 					_CURRENTCALL.addEventListener('timeout', function(){
 
-						if(KBP.options.verbose){ // REMOVED FOR PRODUCTION***
-						console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT);
-						} // ***
+						if(KBP.options.verbose){ // *remove for production*
+						console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT); // *remove for production*
+						} // *** // *remove for production*
 
 							_CURRENTOBJECT.pending = false;
 							_QUEUE[_INDEX] = null;
@@ -333,9 +352,9 @@ function knucklebone(_OPTIONS) {
 							var _RESPONSE = self.beautifyRes(_CURRENTCALL, _CURRENTOBJECT.url);
 
 							// add the "timeout" to res params
-							_RESPONSE.responseType = _RESPONSE.statusText = "timeout"; 
-								
-							
+							_RESPONSE.responseType = _RESPONSE.statusText = "timeout";
+
+
 							if(KBP.options.stream  || !KBP.options.multi){
 								self.error(_RESPONSE, KBP);
 								self.response(_RESPONSE, KBP);
@@ -343,29 +362,29 @@ function knucklebone(_OPTIONS) {
 								self.resDataError.push(_RESPONSE);
 								self.resDataAll.push(_RESPONSE);
 							}
-							
+
 
 
 
 							// ---- IF ALL CALL INTHE QUEUE HAVE RECIEVED A RESPONSE ----
 							if(self.resDataAll.length === self.queue.length){
+
+
 								
-
-								// REMOVED FOR PRODUCTION *****************************
-								for(var i = 0, ii = _QUEUE.length; i < ii; i++){
-									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***
-										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");
-										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]);
-									} 
-								} // **************************************************
+								for(var i = 0, ii = _QUEUE.length; i < ii; i++){  // *remove for production*
+									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***  // *remove for production*
+										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");  // *remove for production*
+										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
+									} // *remove for production*
+								} // ************************************************** // *remove for production*
 
 
-								// Reset queue now that all requests 
+								// Reset queue now that all requests
 								// have a corresponding response
 								_QUEUE = [];
 
 
-								// add the each() method to 							
+								// add the each() method to
 								self.resDataSuccess.each = self.resDataAll.each = self.resDataError.each = function(s){
 										for(var t=this,e=0,n=t.length;n>e;e++)s(t[e],e,t)
 								};
@@ -379,17 +398,17 @@ function knucklebone(_OPTIONS) {
 
         })(_QUEUE_ITEM, _QUEUE_ITEM._XMLHttpRequest, _QUEUE, _INDEX);
 
-       
+
 
         // Open Request
 				_QUEUE_ITEM._XMLHttpRequest.open(_QUEUE_ITEM.type, _QUEUE_ITEM.url);
 
 
 				// if header option specified, set header
-				if(KBP.options.requestHeader){ 
+				if(KBP.options.requestHeader){
 					_QUEUE_ITEM._XMLHttpRequest.setRequestHeader(Object.keys(KBP.options.requestHeader)[0], KBP.options.requestHeader[Object.keys(KBP.options.requestHeader)[0]]);
 				}
-				
+
 				// if timeout, set timeout
 				if(_QUEUE_ITEM.timeout){
 					_QUEUE_ITEM._XMLHttpRequest.timeout = _QUEUE_ITEM.timeout;
@@ -397,19 +416,21 @@ function knucklebone(_OPTIONS) {
 
 				// send Request
 				if(_QUEUE_ITEM.type === "post"){
-					(_QUEUE_ITEM.form === true) ? _QUEUE_ITEM._XMLHttpRequest.send(self.formify(_QUEUE_ITEM.postData)) : _QUEUE_ITEM._XMLHttpRequest.send(_QUEUE_ITEM.postData) ;
+
+					console.log("FORM? ", _QUEUE_ITEM.form);
+					(_QUEUE_ITEM.form === true) ?
+						_QUEUE_ITEM._XMLHttpRequest.send(self.stringifyForm(_QUEUE_ITEM.postData)) :
+						_QUEUE_ITEM._XMLHttpRequest.send(_QUEUE_ITEM.postData) ;
 				} else {
+					console.log("NOT a post?");
 					_QUEUE_ITEM._XMLHttpRequest.send();
 				}
 			},
 
-
-			/* simplifies the response and adds extra properties
-			*/
 			beautifyRes: function(_res, _reqQuery) {
 				// check if beautifyResponse option is false
 				if( (_OPTIONS!==undefined) ? ((_OPTIONS["beautifyResponse"]!==undefined)?_OPTIONS["beautifyResponse"]:true): true ){
-					
+
 					var r = {};
 
 					try {
@@ -425,18 +446,38 @@ function knucklebone(_OPTIONS) {
 					r.responseURL = _res.responseURL;
 					r.status = _res.status;
 					r.statusText = _res.statusText;
-					
+
 					// beautified response
 					return r;
 
-				} 
+				}
 
 				// unbeautified response
-				return _res; 
+				return _res;
 			},
 
 
-			/* converts a form into a form data object 
+			/* Gets all of the form fields that have 
+			the kb-name attribute and their values and 
+			creates a post string
+			*/
+			stringifyForm: function(_FORM){
+				var fields = _FORM.querySelectorAll("[kb-name]");
+				var postString = "";
+				for(var i = 0, ii = fields.length; i < ii; i++){
+					// console.log(fields[i].getAttribute("kb-name"));
+					postString += encodeURIComponent(fields[i].getAttribute("kb-name"))
+						+ "=" + encodeURIComponent(fields[i].value);
+					if(i !== ii-1){
+						postString += "&";
+					}
+				}
+				console.log(postString);
+				return postString;
+			},
+
+
+			/* converts a form into a form data object
 			for enhanced security and usability
 			*/
 			formify: function(_FORM){
