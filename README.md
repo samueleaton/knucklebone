@@ -34,7 +34,7 @@ knucklebone()
 knucklebone().get('path/to/file')
 ```
 ```javascript
-knucklebone().post('path/to/file', dataToSend)
+knucklebone().post('path/to/file', "kbFormName")
 ```
 
 ####There are 3 methods that can handle the response(s):
@@ -79,11 +79,11 @@ Any inputs or form fields inside of the form need a `kb-name` attribute, along w
 </form>
 ```
 
-There are two options for submitting the form:
-1. Add a `pause` method before the `post`
-2. Do the knucklebone call in a form submit handler
+There are two options for submitting the form:  
+1. Add a `pause` method before the `post`  
+2. Do the knucklebone call in a form submit handler  
 
-The first way less work for you.
+The first way is less work for you.
 
 *Add a pause method*  
 ```javascript
