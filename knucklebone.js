@@ -20,9 +20,9 @@ function knucklebone(_OPTIONS) {
 			self.utils.info.permissionToFire = false;
 			self.utils.info.aborted = true;
 
-			if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
-			console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
-			} // *remove for production*
+			// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+			// console.log("%ckb:%c request aborted", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
+			// } // *remove for production*
 
 			return self;
 		},
@@ -33,12 +33,11 @@ function knucklebone(_OPTIONS) {
 		resend: function(){
 			for(var i = 0, ii = this.utils.queue.length; i < ii; i++){
 				if(this.utils.queue[i] !== null){
-					// console.log("RESENDING....");
 					this.utils.queue[i]._XMLHttpRequest.abort();
 
-					if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
-						console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]); // *remove for production*
-					} // *remove for production*
+					// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+						// console.log("%ckb:%c aborted request: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", this.utils.queue[i]); // *remove for production*
+					// } // *remove for production*
 
 					this.utils.newRequest(this.utils.queue[i],this.utils.queue, i);
 				} else {
@@ -123,10 +122,8 @@ function knucklebone(_OPTIONS) {
 			
 			// check if {form:false}
 
-			// console.log("form: ",form);
-
 			this.utils.prepareCall(_URL, "post", _DATA, this); // don't use form if not a form
-			// return this;
+			return this;
 		},
 
 
@@ -157,15 +154,12 @@ function knucklebone(_OPTIONS) {
 			will pause request if pause() method was called;
 			*/
 			prepareCall: function(_URL, _TYPE, _DATA, _KBP){
-				console.log("checkURL: ",_URL);
 				var self = this;
 				if(typeof _URL === "string"){
 					KBP.options.multi = false;
 					if(_DATA){
-						console.log("check2");
 						self.mapCall(_URL, _TYPE, _DATA);
 					} else {
-						console.log("check3");
 						self.mapCall(_URL, _TYPE);
 					}
 				} else if(Array.isArray(_URL)) {
@@ -188,9 +182,9 @@ function knucklebone(_OPTIONS) {
 							e.preventDefault();
 
 
-							if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
-								console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA); // *remove for production*
-							} // 	*** // *remove for production*
+							// if(KBP.options.verbose){ // REMOVED FOR PRODUCTION*** // *remove for production*
+								// console.log("%ckb:%c form submit attempt: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _DATA); // *remove for production*
+							// } // 	*** // *remove for production*
 
 
 							self.pause(KBP);
@@ -213,7 +207,6 @@ function knucklebone(_OPTIONS) {
 			queue of pending requests
 			*/
 			mapCall: function(_URL, _TYPE, _POST_DATA){
-				console.log("check1: ",_URL);
 				var self = this; // utils
 				var newCall = {
 					url: _URL,
@@ -229,11 +222,9 @@ function knucklebone(_OPTIONS) {
 				};
 
 				if(newCall.type === "post"){
-					console.log("tis a post");
 					newCall.postData = _POST_DATA;
 					newCall.form = (_OPTIONS==undefined)? true : ((_OPTIONS["form"])?_OPTIONS["form"]:true );
 				}
-				console.log("boom!");
 				self.queue.push(newCall);
 			},
 
@@ -306,14 +297,14 @@ function knucklebone(_OPTIONS) {
 
 
 								
-								for(var i = 0, ii = _QUEUE.length; i < ii; i++){ // *remove for production*
+								// for(var i = 0, ii = _QUEUE.length; i < ii; i++){ // *remove for production*
 
-									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION *** // *remove for production*
-										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
-										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
-									} // *remove for production*
+									// if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION *** // *remove for production*
+										// console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);"); // *remove for production*
+										// console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
+									// } // *remove for production*
 
-								} // *remove for production*
+								// } // *remove for production*
 								
 
 
@@ -341,9 +332,9 @@ function knucklebone(_OPTIONS) {
 					// if timeout
 					_CURRENTCALL.addEventListener('timeout', function(){
 
-						if(KBP.options.verbose){ // *remove for production*
-						console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT); // *remove for production*
-						} // *** // *remove for production*
+						// if(KBP.options.verbose){ // *remove for production*
+						// console.log("%ckb:%c request timeout: ", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);", _CURRENTOBJECT); // *remove for production*
+						// } // *** // *remove for production*
 
 							_CURRENTOBJECT.pending = false;
 							_QUEUE[_INDEX] = null;
@@ -371,12 +362,12 @@ function knucklebone(_OPTIONS) {
 
 
 								
-								for(var i = 0, ii = _QUEUE.length; i < ii; i++){  // *remove for production*
-									if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***  // *remove for production*
-										console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");  // *remove for production*
-										console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
-									} // *remove for production*
-								} // ************************************************** // *remove for production*
+								// for(var i = 0, ii = _QUEUE.length; i < ii; i++){  // *remove for production*
+									// if(_QUEUE[i] !== null){ // REMOVED FOR PRODUCTION ***  // *remove for production*
+										// console.log("%ckb:%c number of requests and responses are not equal", "color:rgb(255,255,255);padding:0.5px 2px;font-family:'lucida grande'; background-color:rgba(67,90,255,1);", "color:rgb(67,90,255);");  // *remove for production*
+										// console.log("%c this call may be the culprit: ", "color:rgb(67,90,255);", _QUEUE[i]); // *remove for production*
+									// } // *remove for production*
+								// } // ************************************************** // *remove for production*
 
 
 								// Reset queue now that all requests
@@ -417,12 +408,10 @@ function knucklebone(_OPTIONS) {
 				// send Request
 				if(_QUEUE_ITEM.type === "post"){
 
-					console.log("FORM? ", _QUEUE_ITEM.form);
 					(_QUEUE_ITEM.form === true) ?
 						_QUEUE_ITEM._XMLHttpRequest.send(self.stringifyForm(_QUEUE_ITEM.postData)) :
 						_QUEUE_ITEM._XMLHttpRequest.send(_QUEUE_ITEM.postData) ;
 				} else {
-					console.log("NOT a post?");
 					_QUEUE_ITEM._XMLHttpRequest.send();
 				}
 			},
@@ -465,14 +454,12 @@ function knucklebone(_OPTIONS) {
 				var fields = _FORM.querySelectorAll("[kb-name]");
 				var postString = "";
 				for(var i = 0, ii = fields.length; i < ii; i++){
-					// console.log(fields[i].getAttribute("kb-name"));
 					postString += encodeURIComponent(fields[i].getAttribute("kb-name"))
 						+ "=" + encodeURIComponent(fields[i].value);
 					if(i !== ii-1){
 						postString += "&";
 					}
 				}
-				console.log(postString);
 				return postString;
 			},
 
