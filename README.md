@@ -13,7 +13,7 @@
 # knucklebone.js
 Lightweight, Streamable, and Modular, AJAX library for the client
 
-[![GitHub version](https://badge.fury.io/gh/eaton11%2Fknucklebone.svg)](http://badge.fury.io/gh/eaton11%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
+[![GitHub version](https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg)](http://badge.fury.io/gh/samueleaton%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
 
 <br>
