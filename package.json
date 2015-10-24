@@ -4,7 +4,9 @@
   "description": "Lightweight, Streamable, and Modular, AJAX library for the client",
   "main": " ",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "watch 'npm run build' ./src -d",
+    "build": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>knucklbone</title>
+</head>
+<body>
+
+
+<script src="knucklebone.js"></script>
+<script>
+	console.log('kb res', knucklebone.getJson('test_files/hero.json').success(function(res){
+		console.log('res:', res);
+	}));
+</script>
+</body>
+</html>

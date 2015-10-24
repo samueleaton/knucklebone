@@ -3,22 +3,30 @@
 	"description": "Lightweight, Streamable, and Modular, AJAX library for the client",
 	"main": "knucklebone.js",
 	"keywords": [
-    "AJAX",
-    "JavaScript",
-    "Micro",
-    "library",
-    "HTTP",
-    "request",
-    "response",
-    "JSON",
-    "lightweight"
-  ],
-  "license": "MIT",
-  "homepage": "https://github.com/eaton11/knucklebone.js",
+		"AJAX",
+		"JavaScript",
+		"Micro",
+		"library",
+		"HTTP",
+		"request",
+		"response",
+		"JSON",
+		"lightweight"
+	],
+	"license": "MIT",
+	"homepage": "https://github.com/samueleaton/knucklebone",
 	"ignore": [
 		"bower.json",
 		"logo.png",
 		"README.md",
 		".*"
+	],
+	"ignore": [
+		"node_modules",
+		"bower_components",
+		"test",
+		"tests",
+		"src",
+		".DS_Store"
 	]
 }
