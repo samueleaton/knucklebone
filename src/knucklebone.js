@@ -5,7 +5,7 @@ const knucklebone = (function() {
 	function newRequest(reqPath, type, resFormat, sendData) {
 		const REQ = addHandlers(new XMLHttpRequest());
 		REQ.addEventListener('readystatechange', function(evt) {
-			if(REQ.readyState === 4) handleResponse(REQ, resFormat);
+			if(REQ.readyState === 4) handleResponse(REQ, resFormat, type);
 		});
 		REQ.open(type, reqPath);
 
@@ -29,17 +29,24 @@ const knucklebone = (function() {
 
 	/*
 	*/
-	function handleResponse(REQ, resFormat) {
+	function handleResponse(REQ, resFormat, type) {
 		if (REQ.status >= 200 && REQ.status < 400) {
-			if (resFormat === 'json') {
-				const jsonData = parseJson(REQ.response);
-				if (jsonData === null) {
-					return callError(REQ, 'Error parsing response. Expected JSON.');
-				}
-				return callSuccess(REQ, jsonData);
+			// SUCCESSFULL POST RES
+			if (type === 'POST')
+				return callSuccess(REQ, REQ.response);
+			// SUCCESSFULL GET RES
+			if (resFormat !== 'json')
+				return callSuccess(REQ, REQ.response);
+
+			// JSON GET RES
+			var jsonData = parseJson(REQ.response);
+			if (jsonData === null) {
+				return callError(REQ, 'Error parsing response. Expected JSON.');
 			}
-			return callSuccess(REQ, REQ.response);
+			return callSuccess(REQ, jsonData);
+			
 		}
+		// BAD RES
 		return callError(REQ, REQ.response);
 	}
 

@@ -28,11 +28,9 @@ var knucklebone = (function () {
 	function handleResponse(REQ, resFormat, type) {
 		if (REQ.status >= 200 && REQ.status < 400) {
 			// SUCCESSFULL POST RES
-			if (type === 'POST')
-				return callSuccess(REQ, jsonData);
+			if (type === 'POST') return callSuccess(REQ, REQ.response);
 			// SUCCESSFULL GET RES
-			if (resFormat !== 'json')
-				return callSuccess(REQ, REQ.response);
+			if (resFormat !== 'json') return callSuccess(REQ, REQ.response);
 
 			// JSON GET RES
 			var jsonData = parseJson(REQ.response);
@@ -40,7 +38,6 @@ var knucklebone = (function () {
 				return callError(REQ, 'Error parsing response. Expected JSON.');
 			}
 			return callSuccess(REQ, jsonData);
-			
 		}
 		// BAD RES
 		return callError(REQ, REQ.response);
