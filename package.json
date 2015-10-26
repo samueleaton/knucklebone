@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watch 'npm run build' ./src -d",
-    "build": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js"
+    "build": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js ; cp knucklebone.js public/knucklebone.js"
   },
   "repository": {
     "type": "git",
@@ -30,9 +30,8 @@
   },
   "homepage": "https://github.com/eaton11/knucklebone.js#readme",
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-rename": "^1.2.2",
-    "gulp-strip-debug": "^1.0.2",
-    "gulp-uglify": "^1.2.0"
+    "body-parser": "^1.14.1",
+    "ejs": "^2.3.4",
+    "express": "^4.13.3"
   }
 }

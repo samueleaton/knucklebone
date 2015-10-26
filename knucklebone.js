@@ -92,11 +92,26 @@ var knucklebone = (function () {
 		return newRequest(reqPath, 'POST', 'json', data);
 	}
 
+	function formToObject(formId) {
+		var elms = document.getElementById(formId).querySelectorAll('[kb]');
+		var obj = {};
+		for (var i = 0, ii = elms.length; i < ii; i++) {
+			if (elms[i].hasAttribute('name')) {
+				var key = elms[i].getAttribute('name').trim();
+				if (obj[key]) throw Error('form name dublicated');
+				obj[key] = elms[i].value.trim();
+			}
+			elms[i];
+		}
+		return obj;
+	}
+
 	return {
 		get: get,
 		getJson: getJson,
 		post: post,
-		postJson: postJson
+		postJson: postJson,
+		formToObject: formToObject
 	};
 })();
 

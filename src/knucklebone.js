@@ -109,10 +109,25 @@ const knucklebone = (function() {
 		return newRequest(reqPath, 'POST', 'json', data);
 	}
 
+	function formToObject(formId) {
+		const elms = document.getElementById(formId).querySelectorAll('[kb]');
+		const obj = {};
+		for (let i = 0, ii = elms.length; i < ii; i++) {
+			if (elms[i].hasAttribute('name')) {
+				const key = elms[i].getAttribute('name').trim();
+				if (obj[key]) throw Error('form name dublicated');
+				obj[key] = elms[i].value.trim();
+			}
+			elms[i]
+		}
+		return obj;
+	}
+
 	return {
 		get,
 		getJson,
 		post,
-		postJson
+		postJson,
+		formToObject
 	};
 })();
