@@ -11,7 +11,7 @@
 
 
 # knucklebone.js
-Lightweight, Streamable, and Modular, AJAX library for the client
+Lightweight, Streamable, and Modular, AJAX library for the client, to be used mainly for JSON files
 
 [![GitHub version](https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg)](http://badge.fury.io/gh/samueleaton%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
@@ -33,10 +33,10 @@ knucklebone
 - `postJson()`
 
 ```javascript
-knucklebone().get('path/to/file')
+knucklebone().getJson('path/to/file')
 ```
 ```javascript
-knucklebone().post('path/to/file', "kbFormName")
+knucklebone().postJson('url/path', jsonData)
 ```
 
 ####There are 2 methods that can handle the response(s):
