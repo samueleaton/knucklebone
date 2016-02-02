@@ -11,7 +11,7 @@
 
 
 # knucklebone.js
-Lightweight, Streamable, and Modular, AJAX library for the client, to be used mainly for JSON files
+Lightweight AJAX library for the client, intended for JSON API's
 
 [![GitHub version](https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg)](http://badge.fury.io/gh/samueleaton%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
 
@@ -21,34 +21,36 @@ Lightweight, Streamable, and Modular, AJAX library for the client, to be used ma
 
 ## Overview of Knucklebone
 
-####Initiate an AJAX call or series:
-```javascript
-knucklebone
-```
-
-####To specify the request type, there are 4 methods
+#### Available Methods:
 - `get()`
 - `getJson()`
 - `post()`
 - `postJson()`
+- `putJson()`
+- `deleteJson()`
 
 ```javascript
-knucklebone().getJson('path/to/file')
+knucklebone.getJson('path/to/file')
 ```
 ```javascript
-knucklebone().postJson('url/path', jsonData)
+knucklebone.postJson('url/path', jsonData)
+```
+```javascript
+knucklebone.putJson('url/path', jsonData)
 ```
 
 ####There are 2 methods that can handle the response(s):
 - `success` - receives any *succesful* responses
 - `error` - receives any *errored* responses and timeout responses
 
-These methods are all implemented using a promise style. They are not called unless prerequisites are met. They are all optional.
+These methods are all chained onto the call--promise style. They both take a callback.
+
 ```javascript
-knucklebone().get("path/to/file")
-.success(function(res){})
-.error(function(res){});
+knucklebone().getJson("path/to/file")
+.success(function(parsedJson, resObj){})
+.error(function(parsedJson, resObj){});
 ```  
+
 <br> 
 - - -
 

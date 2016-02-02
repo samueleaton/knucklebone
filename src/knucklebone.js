@@ -12,7 +12,7 @@ const knucklebone = (function() {
 		if (type === 'GET') {
 			REQ.send();
 		}
-		else if (type === 'POST') {
+		else {
 			if (resFormat === 'json') {
 				REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 				if (sendData instanceof Object)
@@ -30,34 +30,42 @@ const knucklebone = (function() {
 	/*
 	*/
 	function handleResponse(REQ, resFormat, type) {
+		const resObj = {
+			response: REQ.response,
+			responseText: REQ.responseText,
+			responseURL: REQ.responseURL,
+			status: REQ.status,
+			statusText: REQ.statusText
+		};
+
 		if (REQ.status >= 200 && REQ.status < 400) {
 			// SUCCESSFULL POST RES
-			if (type === 'POST')
-				return callSuccess(REQ, REQ.response);
+			if (type !== 'GET')
+				return callSuccess(REQ, REQ.response, resObj);
 			// SUCCESSFULL GET RES
 			if (resFormat !== 'json')
-				return callSuccess(REQ, REQ.response);
+				return callSuccess(REQ, REQ.response, resObj);
 
 			// JSON GET RES
 			var jsonData = parseJson(REQ.response);
 			if (jsonData === null) {
 				return callError(REQ, 'Error parsing response. Expected JSON.');
 			}
-			return callSuccess(REQ, jsonData);
+			return callSuccess(REQ, jsonData, resObj);
 			
 		}
 		// BAD RES
-		return callError(REQ, REQ.response);
+		return callError(REQ, REQ.response, resObj);
 	}
 
-	function callSuccess(REQ, data) {
+	function callSuccess(REQ, res, resObj) {
 		if (typeof REQ._onSuccess === 'function')
-			REQ._onSuccess(data);
+			REQ._onSuccess(res, resObj);
 	}
 
-	function callError(REQ, data) {
+	function callError(REQ, res, resObj) {
 		if (typeof REQ._onError === 'function')
-			REQ._onError(data);
+			REQ._onError(res, resObj);
 	}
 
 	function parseJson(data) {
@@ -109,6 +117,14 @@ const knucklebone = (function() {
 		return newRequest(reqPath, 'POST', 'json', data);
 	}
 
+	function putJson(reqPath, data) {
+		return newRequest(reqPath, 'PUT', 'json', data);
+	}
+
+	function deleteJson(reqPath, data) {
+		return newRequest(reqPath, 'DELETE', 'json', data);
+	}
+
 	function formToObject(formId) {
 		const elms = document.getElementById(formId).querySelectorAll('[kb]');
 		const obj = {};
@@ -128,6 +144,8 @@ const knucklebone = (function() {
 		getJson,
 		post,
 		postJson,
+		putJson,
+		deleteJson,
 		formToObject
 	};
 })();
