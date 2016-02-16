@@ -4,63 +4,100 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 module.exports = function () {
 
+	/* Lodash-esque helpers
+ */
+	var _ = {
+		isArray: function isArray(obj) {
+			return Array.isArray && Array.isArray(obj) || obj.constructor === Array || obj instanceof Array;
+		},
+		each: function each(list, cb) {
+			if (typeof cb !== 'function') return list;
+			var collection = this.isArray(list) ? list : this.toArray(list);
+			for (var i = 0, ii = collection.length; i < ii; i++) {
+				cb(collection[i]);
+			}
+		},
+		toArray: function toArray(list) {
+			if (!list || !list.length) return [];
+			var arr = [],
+			    i = 0;
+			while (arr.length < list.length) {
+				arr.push(list[i++]);
+			}return arr;
+		}
+	};
+
 	/* Create new request
  */
-	function newRequest(reqPath, type, resFormat, sendData) {
-		var REQ = addHandlers(new XMLHttpRequest());
-		REQ.addEventListener('readystatechange', function (evt) {
-			if (REQ.readyState === 4) handleResponse(REQ, resFormat, type);
+	function newRequest(reqObj) {
+		/*
+  	reqObj.url
+  	reqObj.method
+  	reqObj.contentType
+  	reqObj.data
+  */
+		var XHR_REQ = addHandlers(new XMLHttpRequest());
+		XHR_REQ.addEventListener('readystatechange', function (evt) {
+			// if (REQ.readyState === 4) handleResponse(REQ, resFormat, type);
+			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqObj);
 		});
-		REQ.open(type, reqPath);
+		// REQ.open(type, reqPath);
+		XHR_REQ.open(reqObj.method, reqObj.url);
 
-		if (type === 'GET') {
-			REQ.send();
-		} else {
-			if (resFormat === 'json') {
-				REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-				if (sendData instanceof Object) REQ.send(JSON.stringify(sendData));else REQ.send(sendData);
-			} else REQ.send(sendData);
+		// if (type === 'GET')
+		if (reqObj.method === 'GET') XHR_REQ.send();else {
+			// if (resFormat === 'json') {
+			if (obj.contentType === 'json') {
+				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+				// if (sendData instanceof Object)
+				if (obj.data instanceof Object)
+					// REQ.send(JSON.stringify(sendData));
+					XHR_REQ.send(JSON.stringify(obj.data));else
+					// REQ.send(sendData);
+					XHR_REQ.send(obj.data);
+			} else
+				// REQ.send(sendData);
+				XHR_REQ.send(obj.data);
 		}
-
-		return REQ;
+		return XHR_REQ;
 	}
 
 	/*
  */
-	function handleResponse(REQ, resFormat, type) {
+	function handleResponse(XHR_REQ, reqObj) {
 		var resObj = {
-			response: REQ.response,
-			responseText: REQ.responseText,
-			responseURL: REQ.responseURL,
-			status: REQ.status,
-			statusText: REQ.statusText
+			response: XHR_REQ.response,
+			responseText: XHR_REQ.responseText,
+			responseURL: XHR_REQ.responseURL,
+			status: XHR_REQ.status,
+			statusText: XHR_REQ.statusText
 		};
-
-		if (REQ.status >= 200 && REQ.status < 400) {
-			// SUCCESSFULL POST RES
-			if (type !== 'GET') return callSuccess(REQ, REQ.response, resObj);
-			// SUCCESSFULL GET RES
-			if (resFormat !== 'json') return callSuccess(REQ, REQ.response, resObj);
-
-			// JSON GET RES
-			var jsonData = parseJson(REQ.response);
-			if (jsonData === null) {
-				return callError(REQ, 'Error parsing response. Expected JSON.');
-			}
-			return callSuccess(REQ, jsonData, resObj);
-		}
-		// BAD RES
-		return callError(REQ, REQ.response, resObj);
+		if (XHR_REQ.status >= 200 && XHR_REQ.status < 400) {
+			if (reqObj.method === 'GET' && reqObj.contentType === 'json') return handleGetJsonResponse(XHR_REQ, resObj);else return callSuccess(XHR_REQ, XHR_REQ.response, resObj);
+		} else return callError(XHR_REQ, XHR_REQ.response, resObj);
 	}
 
+	/*
+ */
+	function handleGetJsonResponse(XHR_REQ, resObj) {
+		var jsonData = parseJson(XHR_REQ.response);
+		if ((typeof jsonData === 'undefined' ? 'undefined' : _typeof(jsonData)) === 'object') return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
+	}
+
+	/*
+ */
 	function callSuccess(REQ, res, resObj) {
 		if (typeof REQ._onSuccess === 'function') REQ._onSuccess(res, resObj);
 	}
 
+	/*
+ */
 	function callError(REQ, res, resObj) {
 		if (typeof REQ._onError === 'function') REQ._onError(res, resObj);
 	}
 
+	/*
+ */
 	function parseJson(data) {
 		try {
 			var jsonData = JSON.parse(data);
@@ -70,69 +107,93 @@ module.exports = function () {
 		return jsonData;
 	}
 
-	/*
+	/* Add Success/Error Handlers
  */
 	function addHandlers(reqObj) {
 		reqObj.success = function (cb) {
 			if (typeof cb === 'function') reqObj._onSuccess = cb;else throw Error('callback not passed to "success" method');
-			return this;
+			return reqObj;
 		};
 
 		reqObj.error = function (cb) {
 			if (typeof cb === 'function') reqObj._onError = cb;else throw Error('callback not passed to "error" method');
-			return this;
+			return reqObj;
 		};
-
 		return reqObj;
 	}
 
-	function get(reqPath, params) {
+	/*
+ */
+	function get(url, params) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+
 		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
-			reqPath = reqPath + '?';
-			Object.keys(params).forEach(function (k) {
-				reqPath += k + '=' + encodeURIComponent(params[k]);
+
+			if (url.indexOf('?') === -1) url = url + '?';
+
+			_.each(Object.keys(params), function (k) {
+				url += k + '=' + encodeURIComponent(params[k]);
 			});
 		}
-		return newRequest(reqPath, 'GET');
+		return newRequest({ url: url, method: 'GET' });
 	}
 
-	function getJson(reqPath, params) {
+	/*
+ */
+	function getJson(url, params) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+
 		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
-			reqPath = reqPath + '?';
-			Object.keys(params).forEach(function (k) {
-				reqPath += k + '=' + encodeURIComponent(params[k]);
+
+			if (url.indexOf('?') === -1) url = url + '?';
+
+			_.each(Object.keys(params), function (k) {
+				url += k + '=' + encodeURIComponent(params[k]);
 			});
 		}
-		return newRequest(reqPath, 'GET', 'json');
+		return newRequest({ url: url, method: 'GET', contentType: 'json' });
 	}
 
-	function post(reqPath, data) {
-		return newRequest(reqPath, 'POST', undefined, data);
+	/*
+ */
+	function post(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'POST', data: data });
 	}
 
-	function postJson(reqPath, data) {
-		return newRequest(reqPath, 'POST', 'json', data);
+	/*
+ */
+	function postJson(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'POST', data: data, contentType: 'json' });
 	}
 
-	function putJson(reqPath, data) {
-		return newRequest(reqPath, 'PUT', 'json', data);
+	/*
+ */
+	function putJson(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'PUT', data: data, contentType: 'json' });
 	}
 
-	function deleteJson(reqPath, data) {
-		return newRequest(reqPath, 'DELETE', 'json', data);
+	/*
+ */
+	function deleteJson(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'DELETE', data: data, contentType: 'json' });
 	}
 
+	/*
+ */
 	function formToObject(formId) {
 		var elms = document.getElementById(formId).querySelectorAll('[kb]');
 		var obj = {};
-		for (var i = 0, ii = elms.length; i < ii; i++) {
-			if (elms[i].hasAttribute('name')) {
-				var key = elms[i].getAttribute('name').trim();
+		_.each(elms, function (elm) {
+			if (elm.hasAttribute('name')) {
+				var key = elm.getAttribute('name').trim();
 				if (obj[key]) throw Error('form name dublicated');
-				obj[key] = elms[i].value.trim();
+				obj[key] = elm.value.trim();
 			}
-			elms[i];
-		}
+		});
 		return obj;
 	}
 

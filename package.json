@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watch 'npm run build' ./src -d",
-    "build": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js",
+    "transpile": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js",
     "start": "http-server -p 6969"
   },
   "repository": {
