@@ -1025,36 +1025,40 @@ body .markdown-body
 <br><br />
 <br>  </p>
 <h1 id="knucklebonejs"><a name="user-content-knucklebonejs" href="#knucklebonejs" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>knucklebone.js</h1>
-<p>Lightweight, Streamable, and Modular, AJAX library for the client, to be used mainly for JSON files</p>
-<p><a href="http://badge.fury.io/gh/samueleaton%2Fknucklebone"><img alt="GitHub version" src="https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg" /></a> <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> </p>
+<p>Lightweight AJAX library for the client, intended for JSON API&rsquo;s</p>
+<p><a href="http://badge.fury.io/gh/samueleaton%2Fknucklebone"><img alt="GitHub version" src="https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg" /></a> <img src="https://img.shields.io/badge/license-MIT-blue.svg"></p>
 <p><br></p>
 <h2 id="overview-of-knucklebone"><a name="user-content-overview-of-knucklebone" href="#overview-of-knucklebone" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Overview of Knucklebone</h2>
-<h4 id="initiate-an-ajax-call-or-series"><a name="user-content-initiate-an-ajax-call-or-series" href="#initiate-an-ajax-call-or-series" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Initiate an AJAX call or series:</h4>
-<pre><code class="javascript">knucklebone
-</code></pre>
-
-<h4 id="to-specify-the-request-type-there-are-4-methods"><a name="user-content-to-specify-the-request-type-there-are-4-methods" href="#to-specify-the-request-type-there-are-4-methods" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>To specify the request type, there are 4 methods</h4>
+<h4 id="available-methods"><a name="user-content-available-methods" href="#available-methods" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Available Methods:</h4>
 <ul>
 <li><code>get()</code></li>
 <li><code>getJson()</code></li>
 <li><code>post()</code></li>
 <li><code>postJson()</code></li>
+<li><code>putJson()</code></li>
+<li><code>deleteJson()</code></li>
 </ul>
-<p><pre><code class="javascript">knucklebone().getJson('path/to/file')
-</code></pre><br />
-<pre><code class="javascript">knucklebone().postJson('url/path', jsonData)
-</code></pre></p>
+<pre><code class="javascript">knucklebone.getJson('path/to/file')
+</code></pre>
+
+<pre><code class="javascript">knucklebone.postJson('url/path', jsonData)
+</code></pre>
+
+<pre><code class="javascript">knucklebone.putJson('url/path', jsonData)
+</code></pre>
+
 <h4 id="there-are-2-methods-that-can-handle-the-responses"><a name="user-content-there-are-2-methods-that-can-handle-the-responses" href="#there-are-2-methods-that-can-handle-the-responses" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>There are 2 methods that can handle the response(s):</h4>
 <ul>
 <li><code>success</code> - receives any <em>succesful</em> responses</li>
 <li><code>error</code> - receives any <em>errored</em> responses and timeout responses</li>
 </ul>
-<p>These methods are all implemented using a promise style. They are not called unless prerequisites are met. They are all optional.<br />
-<pre><code class="javascript">knucklebone().get(&quot;path/to/file&quot;)
-.success(function(res){})
-.error(function(res){});
-</code></pre><br />
-<br> </p>
+<p>These methods are all chained onto the call&ndash;promise style. They both take a callback.</p>
+<pre><code class="javascript">knucklebone.getJson(&quot;path/to/file&quot;)
+.success(json =&gt; console.log(json))
+.error(err =&gt; console.error(err));
+</code></pre>
+
+<p><br> </p>
 <hr />
 <h4 id="why-the-name-knucklebone"><a name="user-content-why-the-name-knucklebone" href="#why-the-name-knucklebone" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Why the name &ldquo;knucklebone&rdquo;?</h4>
 <p><a href="https://en.wikipedia.org/wiki/Knucklebones">This</a> is why. Get it? </p></article></body></html>
