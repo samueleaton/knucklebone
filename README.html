@@ -1018,7 +1018,7 @@ body .markdown-body
 <br><br />
 <br><br />
 <p align="center"><br />
-<img src="/Users/samueleaton/Dev/Github/samueleaton/knucklebone/logo.png">  <br />
+<img src="/Users/same/Dev/Github/knucklebone/logo.png">  <br />
 </p><br />
 <br><br />
 <br><br />
@@ -1035,16 +1035,15 @@ body .markdown-body
 <li><code>getJson()</code></li>
 <li><code>post()</code></li>
 <li><code>postJson()</code></li>
-<li><code>putJson()</code></li>
-<li><code>deleteJson()</code></li>
 </ul>
 <pre><code class="javascript">knucklebone.getJson('path/to/file')
+.success(json =&gt; console.log(json))
+.error((err, res) =&gt; console.error(err));
 </code></pre>
 
 <pre><code class="javascript">knucklebone.postJson('url/path', jsonData)
-</code></pre>
-
-<pre><code class="javascript">knucklebone.putJson('url/path', jsonData)
+.success(res =&gt; console.log(res))
+.error((err, res) =&gt; console.error(err));
 </code></pre>
 
 <h4 id="there-are-2-methods-that-can-handle-the-responses"><a name="user-content-there-are-2-methods-that-can-handle-the-responses" href="#there-are-2-methods-that-can-handle-the-responses" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>There are 2 methods that can handle the response(s):</h4>
@@ -1055,10 +1054,21 @@ body .markdown-body
 <p>These methods are all chained onto the call&ndash;promise style. They both take a callback.</p>
 <pre><code class="javascript">knucklebone.getJson(&quot;path/to/file&quot;)
 .success(json =&gt; console.log(json))
-.error(err =&gt; console.error(err));
+.error((err, res) =&gt; console.error(err));
+</code></pre>
+
+<h4 id="get-parameters"><a name="user-content-get-parameters" href="#get-parameters" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Get Parameters</h4>
+<p>Passing an object as a second parameter&hellip;</p>
+<pre><code class="javascript">knucklebone.getJson(&quot;http://example.com&quot;, {
+    name: &quot;sam&quot;, token: &quot;dn398fdh9eud0&quot;
+})
+</code></pre>
+
+<p>&hellip;would result in a query string of:</p>
+<pre><code>http://example.com?name=sam&amp;token=dn398fdh9eud0
 </code></pre>
 
 <p><br> </p>
 <hr />
 <h4 id="why-the-name-knucklebone"><a name="user-content-why-the-name-knucklebone" href="#why-the-name-knucklebone" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Why the name &ldquo;knucklebone&rdquo;?</h4>
-<p><a href="https://en.wikipedia.org/wiki/Knucklebones">This</a> is why. Get it? </p></article></body></html>
+<p><a href="https://en.wikipedia.org/wiki/Knucklebones">This</a> is why. </p></article></body></html>

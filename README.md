@@ -26,19 +26,17 @@ Lightweight AJAX library for the client, intended for JSON API's
 - `getJson()`
 - `post()`
 - `postJson()`
-- `putJson()`
-- `deleteJson()`
 
 ``` javascript
 knucklebone.getJson('path/to/file')
+.success(json => console.log(json))
+.error((err, res) => console.error(err));
 ```
 
 ```javascript
 knucklebone.postJson('url/path', jsonData)
-```
-
-```javascript
-knucklebone.putJson('url/path', jsonData)
+.success(res => console.log(res))
+.error((err, res) => console.error(err));
 ```
 
 #### There are 2 methods that can handle the response(s):
@@ -50,11 +48,28 @@ These methods are all chained onto the call--promise style. They both take a cal
 ``` javascript
 knucklebone.getJson("path/to/file")
 .success(json => console.log(json))
-.error(err => console.error(err));
+.error((err, res) => console.error(err));
 ```  
 
+#### Get Parameters
+
+Passing an object as a second parameter...
+
+``` javascript
+knucklebone.getJson("http://example.com", {
+    name: "sam", token: "dn398fdh9eud0"
+})
+```  
+
+...would result in a query string of:
+
+```
+http://example.com?name=sam&token=dn398fdh9eud0
+```
+
 <br> 
+
 - - -
 
-####Why the name "knucklebone"?
-[This](https://en.wikipedia.org/wiki/Knucklebones) is why. Get it? 
+#### Why the name "knucklebone"?
+[This](https://en.wikipedia.org/wiki/Knucklebones) is why. 
