@@ -13,7 +13,7 @@
 # knucklebone.js
 Lightweight AJAX library for the client, intended for JSON API's
 
-[![GitHub version](https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg)](http://badge.fury.io/gh/samueleaton%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg"> <img src="https://img.shields.io/badge/bower-knucklebone-yellow.svg"> 
+[![GitHub version](https://badge.fury.io/gh/samueleaton%2Fknucklebone.svg)](http://badge.fury.io/gh/samueleaton%2Fknucklebone) <img src="https://img.shields.io/badge/license-MIT-blue.svg">
 
 
 <br>
@@ -29,7 +29,7 @@ Lightweight AJAX library for the client, intended for JSON API's
 - `putJson()`
 - `deleteJson()`
 
-```javascript
+``` javascript
 knucklebone.getJson('path/to/file')
 ```
 ```javascript
@@ -45,7 +45,7 @@ knucklebone.putJson('url/path', jsonData)
 
 These methods are all chained onto the call--promise style. They both take a callback.
 
-```javascript
+``` javascript
 knucklebone().getJson("path/to/file")
 .success(function(parsedJson, resObj){})
 .error(function(parsedJson, resObj){});

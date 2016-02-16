@@ -1,4 +1,4 @@
-const knucklebone = (function() {
+module.exports = (function() {
 
 	/* Create new request
 	*/
@@ -101,11 +101,23 @@ const knucklebone = (function() {
 		return reqObj;
 	}
 
-	function get(reqPath) {
+	function get(reqPath, params) {
+		if (typeof params === 'object') {
+			reqPath = reqPath + '?';
+			Object.keys(params).forEach(k => {
+				reqPath += k + '=' + encodeURIComponent(params[k])
+			});
+		}
 		return newRequest(reqPath, 'GET');
 	}
 
-	function getJson(reqPath) {
+	function getJson(reqPath, params) {
+		if (typeof params === 'object') {
+			reqPath = reqPath + '?';
+			Object.keys(params).forEach(k => {
+				reqPath += k + '=' + encodeURIComponent(params[k])
+			});
+		}
 		return newRequest(reqPath, 'GET', 'json');
 	}
 

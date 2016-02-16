@@ -1,6 +1,8 @@
 'use strict';
 
-var knucklebone = function () {
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+module.exports = function () {
 
 	/* Create new request
  */
@@ -84,11 +86,23 @@ var knucklebone = function () {
 		return reqObj;
 	}
 
-	function get(reqPath) {
+	function get(reqPath, params) {
+		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+			reqPath = reqPath + '?';
+			Object.keys(params).forEach(function (k) {
+				reqPath += k + '=' + encodeURIComponent(params[k]);
+			});
+		}
 		return newRequest(reqPath, 'GET');
 	}
 
-	function getJson(reqPath) {
+	function getJson(reqPath, params) {
+		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+			reqPath = reqPath + '?';
+			Object.keys(params).forEach(function (k) {
+				reqPath += k + '=' + encodeURIComponent(params[k]);
+			});
+		}
 		return newRequest(reqPath, 'GET', 'json');
 	}
 
