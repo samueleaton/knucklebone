@@ -1,6 +1,6 @@
 {
   "name": "knucklebone",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lightweight AJAX library for the client",
   "main": "knucklebone.js",
   "scripts": {
