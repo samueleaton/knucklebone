@@ -1,12 +1,12 @@
 {
   "name": "knucklebone",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Lightweight AJAX library for the client",
   "main": " ",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watch 'npm run build' ./src -d",
-    "transpile": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js",
+    "transpile": "babel ./src > knucklebone.js",
     "start": "http-server -p 6969"
   },
   "repository": {
