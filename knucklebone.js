@@ -10,9 +10,13 @@ var _lodash3 = require('lodash.isplainobject');
 
 var _lodash4 = _interopRequireDefault(_lodash3);
 
-var _lodash5 = require('lodash.forown');
+var _lodash5 = require('lodash.isobjectlike');
 
 var _lodash6 = _interopRequireDefault(_lodash5);
+
+var _lodash7 = require('lodash.forown');
+
+var _lodash8 = _interopRequireDefault(_lodash7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -65,7 +69,7 @@ module.exports = function () {
  */
 	function handleJsonResponse(XHR_REQ, resObj) {
 		var jsonData = parseJson(XHR_REQ.response);
-		if ((0, _lodash4.default)(jsonData)) return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
+		if ((0, _lodash6.default)(jsonData)) return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
 	}
 
 	/*
@@ -115,7 +119,7 @@ module.exports = function () {
 
 			if (url.indexOf('?') === -1) url = url + '?';
 
-			(0, _lodash6.default)(params, function (v, k) {
+			(0, _lodash8.default)(params, function (v, k) {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}
@@ -131,7 +135,7 @@ module.exports = function () {
 
 			if (url.indexOf('?') === -1) url = url + '?';
 
-			(0, _lodash6.default)(params, function (v, k) {
+			(0, _lodash8.default)(params, function (v, k) {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}

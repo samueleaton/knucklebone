@@ -50,7 +50,7 @@
 
 	var _knucklebone2 = _interopRequireDefault(_knucklebone);
 
-	var _finalform = __webpack_require__(8);
+	var _finalform = __webpack_require__(9);
 
 	var _finalform2 = _interopRequireDefault(_finalform);
 
@@ -114,6 +114,10 @@
 
 	var _lodash6 = _interopRequireDefault(_lodash5);
 
+	var _lodash7 = __webpack_require__(6);
+
+	var _lodash8 = _interopRequireDefault(_lodash7);
+
 	function _interopRequireDefault(obj) {
 		return obj && obj.__esModule ? obj : { default: obj };
 	}
@@ -167,7 +171,7 @@
 	 */
 		function handleJsonResponse(XHR_REQ, resObj) {
 			var jsonData = parseJson(XHR_REQ.response);
-			if ((0, _lodash4.default)(jsonData)) return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
+			if ((0, _lodash6.default)(jsonData)) return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
 		}
 
 		/*
@@ -217,7 +221,7 @@
 
 				if (url.indexOf('?') === -1) url = url + '?';
 
-				(0, _lodash6.default)(params, function (v, k) {
+				(0, _lodash8.default)(params, function (v, k) {
 					url += k + '=' + encodeURIComponent(v);
 				});
 			}
@@ -233,7 +237,7 @@
 
 				if (url.indexOf('?') === -1) url = url + '?';
 
-				(0, _lodash6.default)(params, function (v, k) {
+				(0, _lodash8.default)(params, function (v, k) {
 					url += k + '=' + encodeURIComponent(v);
 				});
 			}
@@ -1062,6 +1066,49 @@
 
 /***/ },
 /* 5 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 4.0.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isObjectLike;
+
+
+/***/ },
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -1072,8 +1119,8 @@
 	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(6),
-	    keys = __webpack_require__(7);
+	var baseFor = __webpack_require__(7),
+	    keys = __webpack_require__(8);
 
 	/**
 	 * Casts `value` to `identity` if it's not a function.
@@ -1151,7 +1198,7 @@
 
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	/**
@@ -1205,7 +1252,7 @@
 
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports) {
 
 	/**
@@ -1647,7 +1694,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -1662,7 +1709,7 @@
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-	var _lodash = __webpack_require__(9);
+	var _lodash = __webpack_require__(10);
 
 	var _lodash2 = _interopRequireDefault(_lodash);
 
@@ -2044,7 +2091,7 @@
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global) {/**
@@ -17121,10 +17168,10 @@
 	  }
 	}.call(this));
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)(module), (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)(module), (function() { return this; }())))
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

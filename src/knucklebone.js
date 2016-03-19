@@ -1,5 +1,6 @@
 import each from 'lodash.foreach';
 import isPlainObject from 'lodash.isplainobject';
+import isObjectLike from 'lodash.isobjectlike';
 import forOwn from 'lodash.forown';
 
 module.exports = (function() {
@@ -63,7 +64,7 @@ module.exports = (function() {
 	*/
 	function handleJsonResponse(XHR_REQ, resObj) {
 		const jsonData = parseJson(XHR_REQ.response);
-		if (isPlainObject(jsonData))
+		if (isObjectLike(jsonData))
 			return callSuccess(XHR_REQ, jsonData, resObj);
 		else
 			return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
