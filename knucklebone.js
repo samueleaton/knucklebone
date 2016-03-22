@@ -44,6 +44,7 @@ exports.default = function () {
 		XHR_REQ.addEventListener('readystatechange', function (evt) {
 			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqObj);
 		});
+
 		XHR_REQ.open(reqObj.method, reqObj.url);
 
 		if (reqObj.method === 'GET') XHR_REQ.send();else {
