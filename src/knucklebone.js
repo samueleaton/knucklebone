@@ -1,63 +1,46 @@
-module.exports = (function() {
 
-	/* Lodash-esque helpers
-	*/
-	const _ = {
-		isArray: obj => (Array.isArray && Array.isArray(obj)) || 
-			obj.constructor === Array ||
-			obj instanceof Array,
-		each(list, cb) {
-			if (typeof cb !== 'function')
-				return list;
-			const collection = this.isArray(list) ? list : this.toArray(list);
-			for (let i = 0, ii = collection.length; i < ii; i++) {
-				cb(collection[i]);
-			}
-		},
-		toArray(list) {
-			if (!list || !list.length) return [];
-			var arr = [], i = 0;
-			while(arr.length < list.length)
-				arr.push(list[i++]);
-			return arr;
-		}
-	};
+import each from 'lodash.foreach';
+import isPlainObject from 'lodash.isplainobject';
+import isObjectLike from 'lodash.isobjectlike';
+import forOwn from 'lodash.forown';
+
+module.exports = (function() {
 
 	/* Create new request
 	*/
-	function newRequest(reqObj) {
+	function newRequest(reqOptions) {
 		/*
-			reqObj.url
-			reqObj.method
-			reqObj.contentType
-			reqObj.data
+			reqOptions.url
+			reqOptions.method
+			reqOptions.contentType
+			reqOptions.data
 		*/
 		const XHR_REQ = addHandlers(new XMLHttpRequest());
 		XHR_REQ.addEventListener('readystatechange', evt => {
-			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqObj);
+			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqOptions);
 		});
-		
-		XHR_REQ.open(reqObj.method, reqObj.url);
 
-		if (reqObj.method === 'GET')
+		XHR_REQ.open(reqOptions.method, reqOptions.url);
+
+		if (reqOptions.method === 'GET')
 			XHR_REQ.send();
 		else {
-			if (reqObj.contentType === 'json') {
+			if (reqOptions.requestContentType === 'json') {
 				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-				if (reqObj.data instanceof Object)
-					XHR_REQ.send(JSON.stringify(reqObj.data));
-				else 
-					XHR_REQ.send(reqObj.data);
+				if (isPlainObject(reqOptions.data))
+					XHR_REQ.send(JSON.stringify(reqOptions.data));
+				else
+					XHR_REQ.send(reqOptions.data);
 			}
 			else
-				XHR_REQ.send(reqObj.data);
+				XHR_REQ.send(reqOptions.data);
 		}
 		return XHR_REQ;
 	}
 
 	/*
 	*/
-	function handleResponse(XHR_REQ, reqObj) {
+	function handleResponse(XHR_REQ, reqOptions) {
 		const resObj = {
 			response: XHR_REQ.response,
 			responseText: XHR_REQ.responseText,
@@ -66,8 +49,11 @@ module.exports = (function() {
 			statusText: XHR_REQ.statusText
 		};
 		if (XHR_REQ.status >= 200 && XHR_REQ.status < 400) {
-			if (reqObj.method === 'GET' && reqObj.contentType === 'json')
-				return handleGetJsonResponse(XHR_REQ, resObj);
+			const contentTypeHeader = XHR_REQ.getResponseHeader('content-type');
+			const isJsonResponse = /application\/json/.test(contentTypeHeader);
+
+			if (reqOptions.responseContentType === 'json' || isJsonResponse)
+				return handleJsonResponse(XHR_REQ, resObj);
 			else
 				return callSuccess(XHR_REQ, XHR_REQ.response, resObj);
 		}
@@ -77,9 +63,9 @@ module.exports = (function() {
 
 	/*
 	*/
-	function handleGetJsonResponse(XHR_REQ, resObj) {
+	function handleJsonResponse(XHR_REQ, resObj) {
 		const jsonData = parseJson(XHR_REQ.response);
-		if (typeof jsonData === 'object')
+		if (isObjectLike(jsonData))
 			return callSuccess(XHR_REQ, jsonData, resObj);
 		else
 			return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
@@ -113,23 +99,23 @@ module.exports = (function() {
 
 	/* Add Success/Error Handlers
 	*/
-	function addHandlers(reqObj) {
-		reqObj.success = cb => {
+	function addHandlers(reqOptions) {
+		reqOptions.success = cb => {
 			if (typeof cb === 'function')
-				reqObj._onSuccess = cb;
+				reqOptions._onSuccess = cb;
 			else
 				throw Error('callback not passed to "success" method');
-			return reqObj;
+			return reqOptions;
 		}
 
-		reqObj.error = cb => {
+		reqOptions.error = cb => {
 			if (typeof cb === 'function')
-				reqObj._onError = cb;
+				reqOptions._onError = cb;
 			else
 				throw Error('callback not passed to "error" method');
-			return reqObj;
+			return reqOptions;
 		}
-		return reqObj;
+		return reqOptions;
 	}
 
 	/*
@@ -137,14 +123,14 @@ module.exports = (function() {
 	function get(url, params) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		
-		if (typeof params === 'object') {
-			
+
+		if (isPlainObject(params)) {
+
 			if (url.indexOf('?') === -1)
 				url = url + '?';
 
-			_.each(Object.keys(params), k => {
-				url += k + '=' + encodeURIComponent(params[k])
+			forOwn(params, (v, k) => {
+				url += k + '=' + encodeURIComponent(v);
 			});
 		}
 		return newRequest({ url, method: 'GET' });
@@ -155,17 +141,17 @@ module.exports = (function() {
 	function getJson(url, params) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		
+
 		if (typeof params === 'object') {
-			
+
 			if (url.indexOf('?') === -1)
 				url = url + '?';
 
-			_.each(Object.keys(params), k => {
-				url += k + '=' + encodeURIComponent(params[k])
+			forOwn(params, (v, k) => {
+				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url, method: 'GET', contentType: 'json' });
+		return newRequest({ url, method: 'GET', responseContentType: 'json' });
 	}
 
 	/*
@@ -181,7 +167,7 @@ module.exports = (function() {
 	function postJson(url, data) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'POST', data, contentType: 'json'});
+		return newRequest({ url, method: 'POST', data, requestContentType: 'json'});
 	}
 
 	/*
@@ -189,7 +175,7 @@ module.exports = (function() {
 	function putJson(url, data) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'PUT', data, contentType: 'json'});
+		return newRequest({ url, method: 'PUT', data, requestContentType: 'json'});
 	}
 
 	/*
@@ -197,22 +183,7 @@ module.exports = (function() {
 	function deleteJson(url, data) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'DELETE', data, contentType: 'json'});
-	}
-
-	/*
-	*/
-	function formToObject(formId) {
-		const elms = document.getElementById(formId).querySelectorAll('[kb]');
-		const obj = {};
-		_.each(elms, elm => {
-			if (elm.hasAttribute('name')) {
-				const key = elm.getAttribute('name').trim();
-				if (obj[key]) throw Error('form name dublicated');
-				obj[key] = elm.value.trim();
-			}
-		});
-		return obj;
+		return newRequest({ url, method: 'DELETE', data, requestContentType: 'json'});
 	}
 
 	return {
@@ -221,7 +192,6 @@ module.exports = (function() {
 		post,
 		postJson,
 		putJson,
-		deleteJson,
-		formToObject
+		deleteJson
 	};
 })();
