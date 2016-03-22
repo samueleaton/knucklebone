@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watch 'npm run build' ./src -d",
-    "transpile": "babel ./src > knucklebone.js",
+    "transpile": "babel ./src/knucklebone.js > knucklebone.js",
     "bundle": "webpack",
     "start": "http-server -p 6969"
   },
