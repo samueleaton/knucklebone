@@ -38,6 +38,16 @@ module.exports = function () {
 
 		XHR_REQ.open(reqOptions.method, reqOptions.url);
 
+		if (reqOptions.headers) {
+			(0, _lodash8.default)(reqOptions.headers, function (val, key) {
+				if (key === 'withCredentials') {
+					if (val === true) XHR_REQ.withCredentials = 'true';
+				} else {
+					XHR_REQ.setRequestHeader(key, val);
+				}
+			});
+		}
+
 		if (reqOptions.method === 'GET') XHR_REQ.send();else {
 			if (reqOptions.requestContentType === 'json') {
 				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
@@ -112,7 +122,7 @@ module.exports = function () {
 
 	/*
  */
-	function get(url, params) {
+	function get(url, params, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((0, _lodash4.default)(params)) {
@@ -123,12 +133,12 @@ module.exports = function () {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url: url, method: 'GET' });
+		return newRequest({ url: url, method: 'GET', headers: headers });
 	}
 
 	/*
  */
-	function getJson(url, params) {
+	function getJson(url, params, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
@@ -139,35 +149,35 @@ module.exports = function () {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url: url, method: 'GET', responseContentType: 'json' });
+		return newRequest({ url: url, method: 'GET', responseContentType: 'json', headers: headers });
 	}
 
 	/*
  */
-	function post(url, data) {
+	function post(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data });
+		return newRequest({ url: url, method: 'POST', data: data, headers: headers });
 	}
 
 	/*
  */
-	function postJson(url, data) {
+	function postJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data, requestContentType: 'json' });
+		return newRequest({ url: url, method: 'POST', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	/*
  */
-	function putJson(url, data) {
+	function putJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'PUT', data: data, requestContentType: 'json' });
+		return newRequest({ url: url, method: 'PUT', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	/*
  */
-	function deleteJson(url, data) {
+	function deleteJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'DELETE', data: data, requestContentType: 'json' });
+		return newRequest({ url: url, method: 'DELETE', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	return {

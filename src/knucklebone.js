@@ -22,6 +22,18 @@ module.exports = (function() {
 
 		XHR_REQ.open(reqOptions.method, reqOptions.url);
 
+		if (reqOptions.headers) {
+			forOwn(reqOptions.headers, (val, key) => {
+				if (key === 'withCredentials') {
+					if (val === true)
+						XHR_REQ.withCredentials = 'true';
+				}
+				else {
+					XHR_REQ.setRequestHeader(key, val);
+				}
+			});
+		}
+
 		if (reqOptions.method === 'GET')
 			XHR_REQ.send();
 		else {
@@ -120,7 +132,7 @@ module.exports = (function() {
 
 	/*
 	*/
-	function get(url, params) {
+	function get(url, params, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
 
@@ -133,12 +145,12 @@ module.exports = (function() {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url, method: 'GET' });
+		return newRequest({ url, method: 'GET', headers });
 	}
 
 	/*
 	*/
-	function getJson(url, params) {
+	function getJson(url, params, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
 
@@ -151,39 +163,39 @@ module.exports = (function() {
 				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url, method: 'GET', responseContentType: 'json' });
+		return newRequest({ url, method: 'GET', responseContentType: 'json', headers });
 	}
 
 	/*
 	*/
-	function post(url, data) {
+	function post(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'POST', data});
+		return newRequest({ url, method: 'POST', data, headers});
 	}
 
 	/*
 	*/
-	function postJson(url, data) {
+	function postJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'POST', data, requestContentType: 'json'});
+		return newRequest({ url, method: 'POST', data, requestContentType: 'json', headers});
 	}
 
 	/*
 	*/
-	function putJson(url, data) {
+	function putJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'PUT', data, requestContentType: 'json'});
+		return newRequest({ url, method: 'PUT', data, requestContentType: 'json', headers});
 	}
 
 	/*
 	*/
-	function deleteJson(url, data) {
+	function deleteJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'DELETE', data, requestContentType: 'json'});
+		return newRequest({ url, method: 'DELETE', data, requestContentType: 'json', headers});
 	}
 
 	return {
