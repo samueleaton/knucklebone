@@ -1,14 +1,14 @@
 {
   "name": "knucklebone",
-  "version": "1.0.0",
+  "version": "0.0.6",
   "description": "Lightweight AJAX library for the client",
-  "main": " ",
+  "main": "knucklebone.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "watch 'npm run build' ./src -d",
-    "transpile": "babel ./src > knucklebone.js ; uglifyjs -cm < knucklebone.js > knucklebone.min.js",
-    "start": "http-server -p 6969",
-    "bundle": "webpack"
+    "transpile": "babel ./src/knucklebone.js > knucklebone.js",
+    "bundle": "webpack",
+    "start": "http-server -p 6969"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,16 @@
     "body-parser": "^1.14.1",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
+    "finalform": "0.0.12",
     "http-server": "^0.8.5",
+    "lodash.foreach": "^4.1.0",
     "uglify-js": "^2.6.1",
-    "webpack": "^1.13.0"
+    "webpack": "^1.12.14"
+  },
+  "dependencies": {
+    "lodash.foreach": "^4.1.0",
+    "lodash.forown": "^4.0.1",
+    "lodash.isobjectlike": "^4.0.0",
+    "lodash.isplainobject": "^4.0.3"
   }
 }

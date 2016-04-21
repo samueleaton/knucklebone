@@ -2,58 +2,64 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
 
-module.exports = function () {
+var _lodash = require('lodash.foreach');
 
-	/* Lodash-esque helpers
- */
-	var _ = {
-		isArray: function isArray(obj) {
-			return Array.isArray && Array.isArray(obj) || obj.constructor === Array || obj instanceof Array;
-		},
-		each: function each(list, cb) {
-			if (typeof cb !== 'function') return list;
-			var collection = this.isArray(list) ? list : this.toArray(list);
-			for (var i = 0, ii = collection.length; i < ii; i++) {
-				cb(collection[i]);
-			}
-		},
-		toArray: function toArray(list) {
-			if (!list || !list.length) return [];
-			var arr = [],
-			    i = 0;
-			while (arr.length < list.length) {
-				arr.push(list[i++]);
-			}return arr;
-		}
-	};
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _lodash3 = require('lodash.isplainobject');
+
+var _lodash4 = _interopRequireDefault(_lodash3);
+
+var _lodash5 = require('lodash.isobjectlike');
+
+var _lodash6 = _interopRequireDefault(_lodash5);
+
+var _lodash7 = require('lodash.forown');
+
+var _lodash8 = _interopRequireDefault(_lodash7);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+module.exports = function () {
 
 	/* Create new request
  */
-	function newRequest(reqObj) {
+	function newRequest(reqOptions) {
 		/*
-  	reqObj.url
-  	reqObj.method
-  	reqObj.contentType
-  	reqObj.data
+  	reqOptions.url
+  	reqOptions.method
+  	reqOptions.contentType
+  	reqOptions.data
   */
 		var XHR_REQ = addHandlers(new XMLHttpRequest());
 		XHR_REQ.addEventListener('readystatechange', function (evt) {
-			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqObj);
+			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqOptions);
 		});
-		XHR_REQ.open(reqObj.method, reqObj.url);
 
-		if (reqObj.method === 'GET') XHR_REQ.send();else {
-			if (reqObj.contentType === 'json') {
+		XHR_REQ.open(reqOptions.method, reqOptions.url);
+
+		if (reqOptions.headers) {
+			(0, _lodash8.default)(reqOptions.headers, function (val, key) {
+				if (key === 'withCredentials') {
+					if (val === true) XHR_REQ.withCredentials = 'true';
+				} else {
+					XHR_REQ.setRequestHeader(key, val);
+				}
+			});
+		}
+
+		if (reqOptions.method === 'GET') XHR_REQ.send();else {
+			if (reqOptions.requestContentType === 'json') {
 				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-				if (reqObj.data instanceof Object) XHR_REQ.send(JSON.stringify(reqObj.data));else XHR_REQ.send(reqObj.data);
-			} else XHR_REQ.send(reqObj.data);
+				if ((0, _lodash4.default)(reqOptions.data)) XHR_REQ.send(JSON.stringify(reqOptions.data));else XHR_REQ.send(reqOptions.data);
+			} else XHR_REQ.send(reqOptions.data);
 		}
 		return XHR_REQ;
 	}
 
 	/*
  */
-	function handleResponse(XHR_REQ, reqObj) {
+	function handleResponse(XHR_REQ, reqOptions) {
 		var resObj = {
 			response: XHR_REQ.response,
 			responseText: XHR_REQ.responseText,
@@ -62,15 +68,18 @@ module.exports = function () {
 			statusText: XHR_REQ.statusText
 		};
 		if (XHR_REQ.status >= 200 && XHR_REQ.status < 400) {
-			if (reqObj.method === 'GET' && reqObj.contentType === 'json') return handleGetJsonResponse(XHR_REQ, resObj);else return callSuccess(XHR_REQ, XHR_REQ.response, resObj);
+			var contentTypeHeader = XHR_REQ.getResponseHeader('content-type');
+			var isJsonResponse = /application\/json/.test(contentTypeHeader);
+
+			if (reqOptions.responseContentType === 'json' || isJsonResponse) return handleJsonResponse(XHR_REQ, resObj);else return callSuccess(XHR_REQ, XHR_REQ.response, resObj);
 		} else return callError(XHR_REQ, XHR_REQ.response, resObj);
 	}
 
 	/*
  */
-	function handleGetJsonResponse(XHR_REQ, resObj) {
+	function handleJsonResponse(XHR_REQ, resObj) {
 		var jsonData = parseJson(XHR_REQ.response);
-		if ((typeof jsonData === 'undefined' ? 'undefined' : _typeof(jsonData)) === 'object') return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
+		if ((0, _lodash6.default)(jsonData)) return callSuccess(XHR_REQ, jsonData, resObj);else return callError(XHR_REQ, 'Error parsing response. Expected JSON.', resObj);
 	}
 
 	/*
@@ -98,63 +107,63 @@ module.exports = function () {
 
 	/* Add Success/Error Handlers
  */
-	function addHandlers(reqObj) {
-		reqObj.success = function (cb) {
-			if (typeof cb === 'function') reqObj._onSuccess = cb;else throw Error('callback not passed to "success" method');
-			return reqObj;
+	function addHandlers(reqOptions) {
+		reqOptions.success = function (cb) {
+			if (typeof cb === 'function') reqOptions._onSuccess = cb;else throw Error('callback not passed to "success" method');
+			return reqOptions;
 		};
 
-		reqObj.error = function (cb) {
-			if (typeof cb === 'function') reqObj._onError = cb;else throw Error('callback not passed to "error" method');
-			return reqObj;
+		reqOptions.error = function (cb) {
+			if (typeof cb === 'function') reqOptions._onError = cb;else throw Error('callback not passed to "error" method');
+			return reqOptions;
 		};
-		return reqObj;
+		return reqOptions;
 	}
 
 	/*
  */
-	function get(url, params) {
+	function get(url, params, headers) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+
+		if ((0, _lodash4.default)(params)) {
+
+			if (url.indexOf('?') === -1) url = url + '?';
+
+			(0, _lodash8.default)(params, function (v, k) {
+				url += k + '=' + encodeURIComponent(v);
+			});
+		}
+		return newRequest({ url: url, method: 'GET', headers: headers });
+	}
+
+	/*
+ */
+	function getJson(url, params, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
 
 			if (url.indexOf('?') === -1) url = url + '?';
 
-			_.each(Object.keys(params), function (k) {
-				url += k + '=' + encodeURIComponent(params[k]);
+			(0, _lodash8.default)(params, function (v, k) {
+				url += k + '=' + encodeURIComponent(v);
 			});
 		}
-		return newRequest({ url: url, method: 'GET' });
+		return newRequest({ url: url, method: 'GET', responseContentType: 'json', headers: headers });
 	}
 
 	/*
  */
-	function getJson(url, params) {
+	function post(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-
-		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
-
-			if (url.indexOf('?') === -1) url = url + '?';
-
-			_.each(Object.keys(params), function (k) {
-				url += k + '=' + encodeURIComponent(params[k]);
-			});
-		}
-		return newRequest({ url: url, method: 'GET', contentType: 'json' });
+		return newRequest({ url: url, method: 'POST', data: data, headers: headers });
 	}
 
 	/*
  */
-	function post(url, data) {
+	function postJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data });
-	}
-
-	/*
- */
-	function postJson(url, data) {
-		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data, contentType: 'json' });
+		return newRequest({ url: url, method: 'POST', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	/*
@@ -166,9 +175,9 @@ module.exports = function () {
 
 	/*
  */
-	function putJson(url, data) {
+	function putJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'PUT', data: data, contentType: 'json' });
+		return newRequest({ url: url, method: 'PUT', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	/*
@@ -180,24 +189,9 @@ module.exports = function () {
 
 	/*
  */
-	function deleteJson(url, data) {
+	function deleteJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'DELETE', data: data, contentType: 'json' });
-	}
-
-	/*
- */
-	function formToObject(formId) {
-		var elms = document.getElementById(formId).querySelectorAll('[kb]');
-		var obj = {};
-		_.each(elms, function (elm) {
-			if (elm.hasAttribute('name')) {
-				var key = elm.getAttribute('name').trim();
-				if (obj[key]) throw Error('form name dublicated');
-				obj[key] = elm.value.trim();
-			}
-		});
-		return obj;
+		return newRequest({ url: url, method: 'DELETE', data: data, requestContentType: 'json', headers: headers });
 	}
 
 	return {
