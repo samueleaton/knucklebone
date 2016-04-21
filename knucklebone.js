@@ -38,26 +38,15 @@ module.exports = function () {
   */
 		var XHR_REQ = addHandlers(new XMLHttpRequest());
 		XHR_REQ.addEventListener('readystatechange', function (evt) {
-			// if (REQ.readyState === 4) handleResponse(REQ, resFormat, type);
 			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqObj);
 		});
-		// REQ.open(type, reqPath);
 		XHR_REQ.open(reqObj.method, reqObj.url);
 
-		// if (type === 'GET')
 		if (reqObj.method === 'GET') XHR_REQ.send();else {
-			// if (resFormat === 'json') {
-			if (obj.contentType === 'json') {
+			if (reqObj.contentType === 'json') {
 				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
-				// if (sendData instanceof Object)
-				if (obj.data instanceof Object)
-					// REQ.send(JSON.stringify(sendData));
-					XHR_REQ.send(JSON.stringify(obj.data));else
-					// REQ.send(sendData);
-					XHR_REQ.send(obj.data);
-			} else
-				// REQ.send(sendData);
-				XHR_REQ.send(obj.data);
+				if (reqObj.data instanceof Object) XHR_REQ.send(JSON.stringify(reqObj.data));else XHR_REQ.send(reqObj.data);
+			} else XHR_REQ.send(reqObj.data);
 		}
 		return XHR_REQ;
 	}
@@ -170,9 +159,23 @@ module.exports = function () {
 
 	/*
  */
+	function put(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'PUT', data: data });
+	}
+
+	/*
+ */
 	function putJson(url, data) {
 		if (typeof url !== 'string') throw Error('url must be a string');
 		return newRequest({ url: url, method: 'PUT', data: data, contentType: 'json' });
+	}
+
+	/*
+ */
+	function _delete(url, data) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		return newRequest({ url: url, method: 'DELETE', data: data });
 	}
 
 	/*
@@ -202,7 +205,9 @@ module.exports = function () {
 		getJson: getJson,
 		post: post,
 		postJson: postJson,
+		put: put,
 		putJson: putJson,
+		'delete': _delete,
 		deleteJson: deleteJson,
 		formToObject: formToObject
 	};
