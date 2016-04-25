@@ -224,7 +224,6 @@ module.exports = (function() {
 		put,
 		putJson,
 		'delete': _delete,
-		deleteJson,
-		formToObject
+		deleteJson
 	};
 })();

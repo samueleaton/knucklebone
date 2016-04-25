@@ -202,8 +202,7 @@ module.exports = function () {
 		put: put,
 		putJson: putJson,
 		'delete': _delete,
-		deleteJson: deleteJson,
-		formToObject: formToObject
+		deleteJson: deleteJson
 	};
 }();
 
