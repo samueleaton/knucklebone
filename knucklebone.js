@@ -1,7 +1,5 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 var _lodash = require('lodash.foreach');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -126,12 +124,18 @@ module.exports = function () {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((0, _lodash4.default)(params)) {
+			(function () {
 
-			if (url.indexOf('?') === -1) url = url + '?';
+				if (url.indexOf('?') === -1) url = url + '?';
 
-			(0, _lodash8.default)(params, function (v, k) {
-				url += k + '=' + encodeURIComponent(v);
-			});
+				var queryParams = [];
+
+				(0, _lodash8.default)(params, function (v, k) {
+					queryParams.push(k + '=' + encodeURIComponent(v));
+				});
+
+				url += queryParams.join('&');
+			})();
 		}
 		return newRequest({ url: url, method: 'GET', headers: headers });
 	}
@@ -141,13 +145,19 @@ module.exports = function () {
 	function getJson(url, params, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
-		if ((typeof params === 'undefined' ? 'undefined' : _typeof(params)) === 'object') {
+		if ((0, _lodash4.default)(params)) {
+			(function () {
 
-			if (url.indexOf('?') === -1) url = url + '?';
+				if (url.indexOf('?') === -1) url = url + '?';
 
-			(0, _lodash8.default)(params, function (v, k) {
-				url += k + '=' + encodeURIComponent(v);
-			});
+				var queryParams = [];
+
+				(0, _lodash8.default)(params, function (v, k) {
+					queryParams.push(k + '=' + encodeURIComponent(v));
+				});
+
+				url += queryParams.join('&');
+			})();
 		}
 		return newRequest({ url: url, method: 'GET', responseContentType: 'json', headers: headers });
 	}

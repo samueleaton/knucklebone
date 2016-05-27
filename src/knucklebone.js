@@ -143,9 +143,13 @@ module.exports = (function() {
 			if (url.indexOf('?') === -1)
 				url = url + '?';
 
+			const queryParams = [];
+
 			forOwn(params, (v, k) => {
-				url += k + '=' + encodeURIComponent(v);
+				queryParams.push(k + '=' + encodeURIComponent(v));
 			});
+			
+			url += queryParams.join('&');
 		}
 		return newRequest({ url, method: 'GET', headers });
 	}
@@ -156,14 +160,18 @@ module.exports = (function() {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
 
-		if (typeof params === 'object') {
+		if (isPlainObject(params)) {
 
 			if (url.indexOf('?') === -1)
 				url = url + '?';
 
+			const queryParams = [];
+
 			forOwn(params, (v, k) => {
-				url += k + '=' + encodeURIComponent(v);
+				queryParams.push(k + '=' + encodeURIComponent(v));
 			});
+			
+			url += queryParams.join('&');
 		}
 		return newRequest({ url, method: 'GET', responseContentType: 'json', headers });
 	}
