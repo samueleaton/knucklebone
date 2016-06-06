@@ -22,10 +22,12 @@ Lightweight AJAX library for the client, intended for JSON API's
 ## Overview of Knucklebone
 
 #### Available Methods:
+
 - `get()`
 - `getJson()`
 - `post()`
 - `postJson()`
+- `postUrlencoded()`
 
 ``` javascript
 knucklebone.getJson('path/to/file')
@@ -66,6 +68,19 @@ knucklebone.getJson("http://example.com", {
 ```
 http://example.com?name=sam&token=dn398fdh9eud0
 ```
+
+#### Headers
+
+The third parameter passed to any knucklebone method can be an object of header info.
+
+Example:
+
+``` javascript
+knucklebone.getJson("http://example.com", null, {
+  withCredentials: true,
+  'Content-Type': 'application/json;charset=UTF-8'
+})
+```  
 
 <br> 
 

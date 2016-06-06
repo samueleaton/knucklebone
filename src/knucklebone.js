@@ -4,6 +4,14 @@ import isPlainObject from 'lodash.isplainobject';
 import isObjectLike from 'lodash.isobjectlike';
 import forOwn from 'lodash.forown';
 
+function serializeObject(object) {
+	const pairs = [];
+	forOwn(object, (value, key) => {
+		pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+	});
+	return pairs.join('&');
+}
+
 module.exports = (function() {
 
 	/* Create new request
@@ -16,6 +24,7 @@ module.exports = (function() {
 			reqOptions.data
 		*/
 		const XHR_REQ = addHandlers(new XMLHttpRequest());
+		
 		XHR_REQ.addEventListener('readystatechange', evt => {
 			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqOptions);
 		});
@@ -24,13 +33,10 @@ module.exports = (function() {
 
 		if (reqOptions.headers) {
 			forOwn(reqOptions.headers, (val, key) => {
-				if (key === 'withCredentials') {
-					if (val === true)
-						XHR_REQ.withCredentials = 'true';
-				}
-				else {
+				if (key === 'withCredentials' && val === true)
+					XHR_REQ.withCredentials = 'true';
+				else
 					XHR_REQ.setRequestHeader(key, val);
-				}
 			});
 		}
 
@@ -44,12 +50,14 @@ module.exports = (function() {
 				else
 					XHR_REQ.send(reqOptions.data);
 			}
+			else if (reqOptions.requestContentType === 'urlencoded') {
+				XHR_REQ.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				XHR_REQ.send(reqOptions.data);
+			}
 			else
 				XHR_REQ.send(reqOptions.data);
 		}
 		return XHR_REQ;
-
-		
 	}
 
 	/*
@@ -142,14 +150,7 @@ module.exports = (function() {
 
 			if (url.indexOf('?') === -1)
 				url = url + '?';
-
-			const queryParams = [];
-
-			forOwn(params, (v, k) => {
-				queryParams.push(k + '=' + encodeURIComponent(v));
-			});
-			
-			url += queryParams.join('&');
+			url += serializeObject(params);
 		}
 		return newRequest({ url, method: 'GET', headers });
 	}
@@ -161,17 +162,9 @@ module.exports = (function() {
 			throw Error('url must be a string');
 
 		if (isPlainObject(params)) {
-
 			if (url.indexOf('?') === -1)
 				url = url + '?';
-
-			const queryParams = [];
-
-			forOwn(params, (v, k) => {
-				queryParams.push(k + '=' + encodeURIComponent(v));
-			});
-			
-			url += queryParams.join('&');
+			url += serializeObject(params);
 		}
 		return newRequest({ url, method: 'GET', responseContentType: 'json', headers });
 	}
@@ -181,7 +174,12 @@ module.exports = (function() {
 	function post(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'POST', data, headers});
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: data,
+			headers: headers
+		});
 	}
 
 	/*
@@ -189,7 +187,30 @@ module.exports = (function() {
 	function postJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'POST', data, requestContentType: 'json', headers});
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
+	}
+
+	/*
+	*/
+	function postUrlencoded(url, data, headers) {
+		if (typeof url !== 'string')
+			throw Error('url must be a string');
+		if (!isPlainObject(data))
+			throw Error('data must be an object of key value pairs');
+
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: serializeObject(data),
+			requestContentType: 'urlencoded',
+			headers: headers
+		});
 	}
 
 	/*
@@ -197,7 +218,11 @@ module.exports = (function() {
 	function put(url, data) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'PUT', data});
+		return newRequest({
+			url: url,
+			method: 'PUT',
+			data: data
+		});
 	}
 
 	/*
@@ -205,7 +230,13 @@ module.exports = (function() {
 	function putJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'PUT', data, requestContentType: 'json', headers});
+		return newRequest({
+			url: url,
+			method: 'PUT',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
 	}
 
 	/*
@@ -213,7 +244,11 @@ module.exports = (function() {
 	function _delete(url, data) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'DELETE', data});
+		return newRequest({
+			url: url,
+			method: 'DELETE',
+			data: data
+		});
 	}
 
 	/*
@@ -221,7 +256,13 @@ module.exports = (function() {
 	function deleteJson(url, data, headers) {
 		if (typeof url !== 'string')
 			throw Error('url must be a string');
-		return newRequest({ url, method: 'DELETE', data, requestContentType: 'json', headers});
+		return newRequest({
+			url: url,
+			method: 'DELETE',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
 	}
 
 	return {
@@ -229,6 +270,7 @@ module.exports = (function() {
 		getJson,
 		post,
 		postJson,
+		postUrlencoded,
 		put,
 		putJson,
 		'delete': _delete,

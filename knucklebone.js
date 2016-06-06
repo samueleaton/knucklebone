@@ -18,6 +18,14 @@ var _lodash8 = _interopRequireDefault(_lodash7);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function serializeObject(object) {
+	var pairs = [];
+	(0, _lodash8.default)(object, function (value, key) {
+		pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(value));
+	});
+	return pairs.join('&');
+}
+
 module.exports = function () {
 
 	/* Create new request
@@ -30,6 +38,7 @@ module.exports = function () {
   	reqOptions.data
   */
 		var XHR_REQ = addHandlers(new XMLHttpRequest());
+
 		XHR_REQ.addEventListener('readystatechange', function (evt) {
 			if (XHR_REQ.readyState === 4) handleResponse(XHR_REQ, reqOptions);
 		});
@@ -38,11 +47,7 @@ module.exports = function () {
 
 		if (reqOptions.headers) {
 			(0, _lodash8.default)(reqOptions.headers, function (val, key) {
-				if (key === 'withCredentials') {
-					if (val === true) XHR_REQ.withCredentials = 'true';
-				} else {
-					XHR_REQ.setRequestHeader(key, val);
-				}
+				if (key === 'withCredentials' && val === true) XHR_REQ.withCredentials = 'true';else XHR_REQ.setRequestHeader(key, val);
 			});
 		}
 
@@ -50,6 +55,9 @@ module.exports = function () {
 			if (reqOptions.requestContentType === 'json') {
 				XHR_REQ.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 				if ((0, _lodash4.default)(reqOptions.data)) XHR_REQ.send(JSON.stringify(reqOptions.data));else XHR_REQ.send(reqOptions.data);
+			} else if (reqOptions.requestContentType === 'urlencoded') {
+				XHR_REQ.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				XHR_REQ.send(reqOptions.data);
 			} else XHR_REQ.send(reqOptions.data);
 		}
 		return XHR_REQ;
@@ -124,18 +132,9 @@ module.exports = function () {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((0, _lodash4.default)(params)) {
-			(function () {
 
-				if (url.indexOf('?') === -1) url = url + '?';
-
-				var queryParams = [];
-
-				(0, _lodash8.default)(params, function (v, k) {
-					queryParams.push(k + '=' + encodeURIComponent(v));
-				});
-
-				url += queryParams.join('&');
-			})();
+			if (url.indexOf('?') === -1) url = url + '?';
+			url += serializeObject(params);
 		}
 		return newRequest({ url: url, method: 'GET', headers: headers });
 	}
@@ -146,18 +145,8 @@ module.exports = function () {
 		if (typeof url !== 'string') throw Error('url must be a string');
 
 		if ((0, _lodash4.default)(params)) {
-			(function () {
-
-				if (url.indexOf('?') === -1) url = url + '?';
-
-				var queryParams = [];
-
-				(0, _lodash8.default)(params, function (v, k) {
-					queryParams.push(k + '=' + encodeURIComponent(v));
-				});
-
-				url += queryParams.join('&');
-			})();
+			if (url.indexOf('?') === -1) url = url + '?';
+			url += serializeObject(params);
 		}
 		return newRequest({ url: url, method: 'GET', responseContentType: 'json', headers: headers });
 	}
@@ -166,42 +155,88 @@ module.exports = function () {
  */
 	function post(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data, headers: headers });
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: data,
+			headers: headers
+		});
 	}
 
 	/*
  */
 	function postJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'POST', data: data, requestContentType: 'json', headers: headers });
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
+	}
+
+	/*
+ */
+	function postUrlencoded(url, data, headers) {
+		if (typeof url !== 'string') throw Error('url must be a string');
+		if (!(0, _lodash4.default)(data)) throw Error('data must be an object of key value pairs');
+
+		return newRequest({
+			url: url,
+			method: 'POST',
+			data: serializeObject(data),
+			requestContentType: 'urlencoded',
+			headers: headers
+		});
 	}
 
 	/*
  */
 	function put(url, data) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'PUT', data: data });
+		return newRequest({
+			url: url,
+			method: 'PUT',
+			data: data
+		});
 	}
 
 	/*
  */
 	function putJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'PUT', data: data, requestContentType: 'json', headers: headers });
+		return newRequest({
+			url: url,
+			method: 'PUT',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
 	}
 
 	/*
  */
 	function _delete(url, data) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'DELETE', data: data });
+		return newRequest({
+			url: url,
+			method: 'DELETE',
+			data: data
+		});
 	}
 
 	/*
  */
 	function deleteJson(url, data, headers) {
 		if (typeof url !== 'string') throw Error('url must be a string');
-		return newRequest({ url: url, method: 'DELETE', data: data, requestContentType: 'json', headers: headers });
+		return newRequest({
+			url: url,
+			method: 'DELETE',
+			data: data,
+			requestContentType: 'json',
+			headers: headers
+		});
 	}
 
 	return {
@@ -209,6 +244,7 @@ module.exports = function () {
 		getJson: getJson,
 		post: post,
 		postJson: postJson,
+		postUrlencoded: postUrlencoded,
 		put: put,
 		putJson: putJson,
 		'delete': _delete,
